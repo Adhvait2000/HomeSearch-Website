@@ -12,9 +12,7 @@ const connectDB = async () => {
     useNewUrlParser: true,
   });
 
-  console.log(
-    `MongoDB Connected: ${conn.connection.host}`.orange.underline.bold
-  );
+  console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold);
 };
 
 // so that we can export functions, objects, and their references from one file

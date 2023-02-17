@@ -1,9 +1,10 @@
 // load the relevant modules for server.js
 const express = require("express");
 const dotenv = require("dotenv");
-const colors = require(colors);
+const colors = require("colors");
 const fileupload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
 // load env vars
