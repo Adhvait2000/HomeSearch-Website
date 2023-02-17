@@ -37,6 +37,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
 });
 
 // Grant access to specific roles
+// Validation: if request's role is included in the array of roles (array name: roles)
+// Three dots in JavaScript, i.e. … is called the spread operator.
+// The spread operator is a shorthand for iterating over either arrays, plain objects, or arguments of a function.
 exports.authorize = (...roles) => {
   return (req, res, next) => {
     console.log(req.user.role);
