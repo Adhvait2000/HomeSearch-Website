@@ -5,13 +5,13 @@ const User = require("../models/User");
 const crypto = require("crypto");
 
 // @desc    Register User
-// @route   POST /api/v1/auth/register
+// @route   POST /homesearch/v1/auth/register
 // @access  PUBLIC
 
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role } = req.body; // you have to pass in these parameters in the request to register user
 
-  // Create user
+  // Create user using User Model
   const user = await User.create({
     name,
     email,
@@ -24,11 +24,11 @@ exports.register = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Login User
-// @route   POST /api/v1/auth/login
+// @route   POST /homesearch/v1/auth/login
 // @access  PUBLIC
 
 exports.login = asyncHandler(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body; // you have to pass in these parameters in the request to login
 
   // Validate email & password
   if (!email || !password) {
@@ -36,13 +36,15 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
+  // If for some reason you need to get the password(any field)
+  // but need to have select: false in the schema. use select('+password etc')
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     return next(new ErrorResponse("Invalid credentials", 401)); //401: unauthorised
   }
 
-  // Check if password matches
+  // Check if password matches (if user exists in DB)
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
@@ -54,7 +56,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get current logged in user
-// @route   GET /api/v1/auth/me
+// @route   GET /homesearch/v1/auth/me
 // @access  PRIVATE
 
 exports.getMe = asyncHandler(async (req, res, next) => {
@@ -67,7 +69,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Forget password
-// @route   GET /api/v1/auth/forgotpassword
+// @route   GET /homesearch/v1/auth/forgotpassword
 // @access  PUBLIC
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
@@ -80,12 +82,16 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   // Get reset token
   const resetToken = user.getResetPasswordToken();
 
+  // validateBeforeSave: true -> documents are automatically validated before they are saved to the database.
+  // This is to prevent saving an invalid document.
+  // validateBeforeSave: false -> If you want to handle validation manually, and be able to save objects
+  // which don't pass validation.
   await user.save({ validateBeforeSave: false });
 
   // Create reset url
   const resetUrl = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/auth/resetpassword/${resetToken}`;
+  )}/homesearch/v1/auth/resetpassword/${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requesteed the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
@@ -102,8 +108,8 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    user.resetPasswordToken = undefined; // setting the field to null (because resetEmail has to be resent)
+    user.resetPasswordExpire = undefined; // setting the field to null (because resetEmail has to be resent)
 
     await user.save({ validateBeforeSave: false });
 
@@ -119,7 +125,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Reset password
-// @route   PUT /api/v1/auth/resetpassword/:resettoken
+// @route   PUT /homesearch/v1/auth/resetpassword/:resettoken
 // @access  PUBLIC
 
 exports.resetPassword = asyncHandler(async (req, res, next) => {
@@ -140,8 +146,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // Set new password
   user.password = req.body.password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
+  user.resetPasswordToken = undefined; // setting the field to null (because password has been reset)
+  user.resetPasswordExpire = undefined; // setting the field to null (because password has been reset)
   await user.save();
 
   sendTokenResponse(user, 200, res);

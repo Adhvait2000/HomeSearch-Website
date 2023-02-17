@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a password"],
     minlength: 6,
-    select: false,
+    select: false, // makes field values not accessible using "this.
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
@@ -37,6 +37,7 @@ const UserSchema = new mongoose.Schema({
 
 // Encrypt password using bcrypt
 UserSchema.pre("save", async function (next) {
+  // Only run this function if password was modified (not on other update functions)
   if (!this.isModified("password")) {
     next();
   }
@@ -73,7 +74,7 @@ UserSchema.methods.getResetPasswordToken = function () {
     .update(resetToken)
     .digest("hex");
 
-  // Set expire
+  // Set expire to 10mins
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
