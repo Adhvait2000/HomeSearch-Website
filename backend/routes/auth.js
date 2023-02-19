@@ -5,6 +5,7 @@ const {
   getMe,
   forgotPassword,
   resetPassword,
+  logout,
 } = require("../controllers/auth");
 
 // Use the express.Router class to create modular,
@@ -16,6 +17,7 @@ const { protect } = require("../middleware/auth");
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/logout", logout);
 // protected route because contains information about registered users
 router.get("/me", protect, getMe);
 router.post("/forgotpassword", forgotPassword);
