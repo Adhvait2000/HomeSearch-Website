@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const colors = require("colors");
 const fileupload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const mongoSanitize = require("express-mongo-sanitize");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
@@ -23,6 +24,12 @@ app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
+
+// File uploading
+app.use(fileupload());
+
+// Sanitize data
+app.use(mongoSanitize());
 
 // Mount routers
 app.use("/homesearch/v1/auth", auth);
