@@ -1,0 +1,79 @@
+.float {
+    background-color: #fff;
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.login-signup-container {
+    background-color: #f6dfdf;
+    padding: 7rem 25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+.login-box{
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px 25px;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color:rgb(230, 229, 229);
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.login-text{
+    font-size: 25px;
+}
+
+.login-form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-form-input{
+    padding: 10px;
+    margin: 10px;
+    border-color:rgb(230, 229, 229);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.login-button{
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: rgb(207, 117, 0);
+    color: white;
+    border-style: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-options{
+    display: flex;
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: center;
+    flex-direction: column;
+}
+
+.login-options-button{
+    border-color:rgb(230, 229, 229);
+    border-width: 1px;
+    border-style: solid;
+    margin: 1px;
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+}
