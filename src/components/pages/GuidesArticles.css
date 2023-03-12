@@ -1,0 +1,28 @@
+.guide-container {
+    background-color: #f6dfdf;
+    padding: 10rem 25rem 10rem 25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .floater {
+    background-color: #fff;
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .guide-article{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:centre;
+   margin-bottom: 24px;
+    padding: 24px;
+    color: #244444;
+  }
+  

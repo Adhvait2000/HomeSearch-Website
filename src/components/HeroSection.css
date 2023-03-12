@@ -1,0 +1,20 @@
+
+.hero-style {
+  background-image:url('hhhh.jpg');
+  width: fit-content;
+  height: fit-content;
+
+}
+
+.hero-text {
+    text-align: center;
+    font-size: larger;
+    text-shadow: 0 0 20px #dbd5fa;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:#242424;
+  }
+
+
