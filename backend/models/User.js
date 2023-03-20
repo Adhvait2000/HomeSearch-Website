@@ -27,6 +27,11 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false, // makes field values not accessible using "this.
   },
+  watchlist: {
+    type: [mongoose.Schema.Types.Mixed],
+    required: [false, "Please check if user has a watchlist"],
+    default: [],
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
