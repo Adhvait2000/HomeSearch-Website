@@ -15,18 +15,18 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Read JSON files
-// const bootcamps = JSON.parse(
-//   fs.readFileSync(`${__dirname}/_data/bootcamps.json`, "utf-8")
-// );
-
 const users = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/users.json`, "utf-8")
 );
 
+// const maindata = JSON.parse(
+//   fs.readFileSync(`${__dirname}/_data/maindata.json`, "utf-8")
+// );
+
 // Import into DB
 const importData = async () => {
   try {
-    // await Bootcamp.create(bootcamps);
+    // await MainData.create(maindata);
     await User.create(users);
     console.log("Data Imported...".green.inverse);
     process.exit();
@@ -39,6 +39,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     // await Bootcamp.deleteMany();
+    // await MainData.deleteMany();
     await User.deleteMany();
     console.log("Data Deleted...".red.inverse);
     process.exit();
