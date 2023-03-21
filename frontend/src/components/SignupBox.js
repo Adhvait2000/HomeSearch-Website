@@ -8,13 +8,29 @@ const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
     const submitSignup = (event) => {
         event.preventDefault(); 
         const formData = new FormData(event.target);
-        const loginForm = Object.fromEntries(formData);
-        console.log(loginForm);
+        const signupForm = Object.fromEntries(formData);
+
+        if (signupForm['password']!=signupForm['confirmPassword']){
+            setNotificationMessage('Please confirm your password properly.');
+            return;
+        }
+
         loginSignupService
-            .sendLoginDetails(loginForm['loginId'], loginForm['password'])
-            .then() //TO DO: set some return, depends on what info backend returns
-            .catch(error => setNotificationMessage('Error occurred, please try again.'));
+            .sendSignupDetails(signupForm['name'], signupForm['email'], signupForm['password'], "user")
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                if (error.response){
+                    //if (error.response.status===401) setNotificationMessage('Error occurred, check your email/password!');
+                    //else if (error.response.status===400) setNotificationMessage(error.response.data.error);
+                    setNotificationMessage('Error occurred, please check again!');
+                }
+                else setNotificationMessage('Unknown error occurred, please try again.');
+            });
     }
+
+
 
     if (!isLoginBox) return (
         <div className="float">
@@ -25,8 +41,8 @@ const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
                     <form className="login-form" onSubmit={submitSignup}>
                         <input name="name" className="login-form-input" type="text" placeholder="Name"/>
                         <input name="email" className="login-form-input" type="text" placeholder="Email"/>
-                        <input name="phone" className="login-form-input" type="text" placeholder="Phone Number"/>
                         <input name="password" className="login-form-input" type="password" placeholder="Password"/>
+                        <input name="confirmPassword" className="login-form-input" type="password" placeholder="Confirm Password"/>
                         <button className="login-button" type="submit">Create Account</button>
                     </form>
                     <div className="login-options">
