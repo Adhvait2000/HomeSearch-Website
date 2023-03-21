@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false, // makes field values not accessible using "this.
   },
+  // to store favourite housing projects which is tagged to each user individually
   watchlist: {
     type: [mongoose.Schema.Types.Mixed],
     required: [false, "Please check if user has a watchlist"],
