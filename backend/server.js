@@ -21,6 +21,11 @@ connectDB();
 
 // Router files
 const auth = require("./routes/auth");
+const search = require("./routes/search");
+const watchlist = require("./routes/watchlist");
+const priceestimator = require("./routes/priceestimator");
+
+
 
 const app = express();
 
@@ -56,8 +61,29 @@ app.use(hpp());
 // Enable CORS
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
+
+
+
+
 // Mount routers
 app.use("/homesearch/v1/auth", auth);
+app.use("/homesearch/v1/watchlist", watchlist);
+app.use("/homsearch/v1/search",search);
+app.use("/homsearch/v1/priceestimator",priceestimator);
+
+
 
 // Error Handler
 app.use(errorHandler); // order matters over here
