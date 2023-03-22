@@ -78,6 +78,11 @@ app.use((req, res, next) => {
 
 
 // Mount routers
+// app.get("/homesearch", (req, res) => {
+//   res.redirecrt("homsearch/auth")
+// })
+
+
 app.use("/homesearch/v1/auth", auth);
 app.use("/homesearch/v1/watchlist", watchlist);
 app.use("/homsearch/v1/search",search);

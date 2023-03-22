@@ -5,10 +5,10 @@ const WatchlistController = require('../controllers/watchlist');
 const { protect } = require("../middleware/auth");
 
 
-router.get('/',protect,WatchlistController.getFullWatchList );
-router.get('/:id', protect,WatchlistController.retrieveHousingDev);
-router.post('/addToWatchlist',protect,WatchlistController.addToWatchlist);
-router.delete('/removeFromWatchlist',protect,WatchlistController.removeFromWatchlist);
+router.get('/:userId',protect,WatchlistController.getFullWatchList );
+router.post('/:userId',protect,WatchlistController.addToWatchlist);
+router.delete('/:userId/:itemId',protect,WatchlistController.removeFromWatchlist);
+router.get('/:userId/:itemId', protect,WatchlistController.retrieveHousingDev);
 
 
 module.exports = router;
