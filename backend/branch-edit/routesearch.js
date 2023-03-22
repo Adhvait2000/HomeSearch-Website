@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const auth = requrie('../middleware/auth');
-const SearchController = require(../controllers/search);
+const { protect } = require("../middleware/auth");
+const SearchController = require('../controllers/search');
 
-router.get('/dropdown',auth,SearchController.getAllTownNames );
-router.get('/dropdown/:town', auth, SearchController.getTownStatistics);
+router.get('/dropdown',protect,SearchController.getAllTownNames );
+router.get('/dropdown/:town', protect, SearchController.getTownStatistics);
 router.get('')
 
 

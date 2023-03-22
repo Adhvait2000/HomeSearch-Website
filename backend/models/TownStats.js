@@ -26,6 +26,11 @@ const TownStatsSchema = new mongoose.Schema({
       "Please add an average price for both private and public houses in this district number",
     ],
   },
+  generalLocation:{
+    type: [String],
+    required: [true, "Please add a general location"],
+    default : [],
+  },
 });
 
 module.exports = mongoose.model("TownStats", TownStatsSchema);

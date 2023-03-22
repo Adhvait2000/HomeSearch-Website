@@ -13,7 +13,6 @@ exports.getFullWatchList = async (req,res,next) => {
     }
 };
 
-
 exports.retrieveHousingDev = async(req,res,next) => {
     const userId = req.params.userId ;
     const itemId = req.params.itemId;
