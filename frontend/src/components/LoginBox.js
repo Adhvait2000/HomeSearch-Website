@@ -3,16 +3,24 @@ import Notification from './Notification';
 import { useState, useEffect } from 'react';
 
 const LoginBox = ({isLoginBox, setLoginOrSignupBox}) => {
-    const [notificationMessage, setNotificationMessage] = useState(''); //can use for error or input validation.
+    const [notificationMessage, setNotificationMessage] = useState(''); //sets error message.
 
     const submitLogin = (event) => {
         event.preventDefault(); 
         const formData = new FormData(event.target);
         const loginForm = Object.fromEntries(formData);
         loginSignupService
-            .sendLoginDetails(loginForm['name'], loginForm['email'], loginForm['phone'], loginForm['password'])
-            .then() //depends on what info backend returns
-            .catch(error => setNotificationMessage('Error occurred, please try again.'));
+            .sendLoginDetails(loginForm['loginId'], loginForm['password'])
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                if (error.response){
+                    if (error.response.status===401) setNotificationMessage('Error occurred, check your email/password!');
+                    else if (error.response.status===400) setNotificationMessage('Error occurred, please input something!');
+                }
+                else setNotificationMessage('Unknown error occurred, please try again.');
+            });
     }
 
     
