@@ -29,17 +29,16 @@ exports.getTownStatistics = async(req,res,next)=>{
         else {
             const { rentalPrice,buyPrice , buyOrRent, publicOrPrivate } = req.query;
             const queryParams = {};
-            if (rentalPrice) queryParams.rentalPrice = rentalPrice;
-            if (buyPrice)queryParams.buyPrice = buyPrice;
             if (buyOrRent) queryParams.buyOrRent = buyOrRent;
             if (publicOrPrivate) queryParams.publicOrPrivate = publicOrPrivate;
-            
-            const results = await MainData.find(queryParams);
+            const  results = await MainData.find(queryParams);
+
+            const filteredResults = results.filter();
             res.json(results);
             }
 
 
-
+            
     }   catch(err){
         console.error(err);
         res.status(500).json({message: 'Server error'});
@@ -51,7 +50,14 @@ exports.getQuerySearch = async(req,res,next)=>{
 };
 
 
-exports.getBudgetOptions = async(req,res,next)=>{
+exports.getBudgetSearch = async(req,res,next)=>{
+    const districtNum=  req.params.districtNumber ;
+    const buyOrRent = req.query;
+
+    const queryParams = {};
+    if(buyOrRent) queryParams.buyOrRent = buyOrRent;
+    
+
 
 };
 
