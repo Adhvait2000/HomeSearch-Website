@@ -1,10 +1,22 @@
 const mongoose = requrie ('mongoose');
+const MainData = require('../models/MainData');
+const TownStats = require('../models/TownStats');
 
-
-export.getAllTownNames = (req,res, next)=>{
-
+exports.getAllTownNames = async (req,res, next)=>{
+    try{
+        const townsList = await TownStats.find({});
+        res.json(townsList);
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message: 'Server error'});
+    }
 }
 
-export.getTownStatistics = (req,res,next)=>{
-    
+exports.getTownStatistics = (req,res,next)=>{
+    try{
+        const districtNumber =  req.params.district ;
+        const items = await 
+    }                                    
 }
+
+

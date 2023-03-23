@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const TownStatsSchema = new mongoose.Schema({
-  districtNo: {
+  districtNumber: {
     type: String,
     required: [true, "Please add a dsitrict number"],
   },
