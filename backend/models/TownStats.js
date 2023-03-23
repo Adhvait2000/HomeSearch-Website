@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const TownStatsSchema = new mongoose.Schema({
-  districtNo: {
+  districtNumber: {
     type: String,
     required: [true, "Please add a dsitrict number"],
   },
@@ -25,6 +25,11 @@ const TownStatsSchema = new mongoose.Schema({
       true,
       "Please add an average price for both private and public houses in this district number",
     ],
+  },
+  generalLocation:{
+    type: [String],
+    required: [true, "Please add a general location"],
+    default : [],
   },
 });
 
