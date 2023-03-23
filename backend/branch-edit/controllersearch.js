@@ -14,9 +14,10 @@ exports.getAllTownData = async (req,res, next)=>{
 
 exports.getTownStatistics = async(req,res,next)=>{
     try{
+        const districtNum=  req.params.districtNumber ;
+        const items = await TownStats.find({districtNumber: districtNum});
+
         if(Object.keys(req.query).length==0){
-            const districtNum=  req.params.districtNumber ;
-            const items = await TownStats.find({districtNumber: districtNum});
             const results = await MainData.find({districtNumber: districtNum});
             const maxCount = 50;
             const limitedResults  = results.slice(0,maxCount);
@@ -26,8 +27,18 @@ exports.getTownStatistics = async(req,res,next)=>{
     
         }
         else {
+            const { price, rentalPrice,buyPrice ,type, buyOrRent, publicOrPrivate } = req.query;
+            const queryParams = {};
+            if (price) queryParams.price = price;
+            if (rentalPrice) queryParams.rentalPrice = rentalPrice;
+            if (type) queryParams.type = type;
+            if (buyOrRent) queryParams.buyOrRent = buyOrRent;
+            if (publicOrPrivate) queryParams.publicOrPrivate = publicOrPrivate;
+            if(buyPrice)queryParams.buyPrice = buyPrice;
             
-        }
+            const results = await MainData.find(queryParams);
+
+            }
 
 
 
