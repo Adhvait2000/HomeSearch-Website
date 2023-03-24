@@ -9,7 +9,6 @@ const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
         event.preventDefault(); 
         const formData = new FormData(event.target);
         const signupForm = Object.fromEntries(formData);
-
         if (signupForm['password']!=signupForm['confirmPassword']){
             setNotificationMessage('Please confirm your password properly.');
             return;

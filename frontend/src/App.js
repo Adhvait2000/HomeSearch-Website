@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import GuidesArticles from './components/pages/GuidesArticles';
 import Help from './components/pages/Help';
 import LoginSignup from './components/pages/LoginSignup';
+import MainSearch from './components/pages/MainSearch';
+import Profile from './components/pages/Profile';
 
 
 
@@ -19,6 +21,9 @@ function App() {
        <Route path="/GuidesArticles" element={<GuidesArticles/>}/>
        <Route path="/Help" element={<Help/>}/>
        <Route path="/sign-up" element={<LoginSignup/>}/>
+
+       <Route path ="/search" element={<MainSearch/>}/>
+       <Route path ="/profile" element={<Profile/>}/>
       </Routes>
       <Footer/>
       </Router>

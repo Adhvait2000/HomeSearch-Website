@@ -21,6 +21,8 @@ connectDB();
 
 // Router files
 const auth = require("./routes/auth");
+
+
 const search = require("./routes/search");
 const watchlist = require("./routes/watchlist");
 const priceestimator = require("./routes/priceestimator");
