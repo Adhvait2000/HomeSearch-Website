@@ -1,0 +1,18 @@
+.search-float{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+.search-container{
+    border: solid;
+    border-width: 1px;
+    border-color:aliceblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
