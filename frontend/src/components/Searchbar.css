@@ -1,0 +1,15 @@
+.searchbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.searchbarForm{
+    font-size: 16px;
+    padding: 6px;
+    margin: 10px;
+    border-color:rgb(230, 229, 229);
+    border-width: 1px;
+    border-style: solid;
+}
