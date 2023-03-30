@@ -33,6 +33,7 @@ exports.getPrices = async(req, res, next)=>{
 };
 
 
+
 exports.getPropertyTypeList = async(req, res, next)=>{
      
         fs.readFile('../_data/property_type.json', (err, data)=>{
