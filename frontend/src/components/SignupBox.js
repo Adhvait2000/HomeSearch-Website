@@ -8,7 +8,6 @@ const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
     const {signup, notificationMessage, setNotificationMessage} = useSignup();
 
     const submitSignup = (event) => {
-        
         event.preventDefault(); 
 
         const formData = new FormData(event.target);

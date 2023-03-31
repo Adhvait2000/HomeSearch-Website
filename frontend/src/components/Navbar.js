@@ -1,8 +1,10 @@
 import React, { useState,useEffect} from 'react';
-import { Button } from './Button';
+import { LoginButton } from './LoginButton';
+import { LogoutButton } from './LogoutButton';
 import{Link} from 'react-router-dom';
 import './Navbar.css';
-import { dom } from '@fortawesome/fontawesome-svg-core'
+import { dom } from '@fortawesome/fontawesome-svg-core';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 dom.watch() // This will kick off the initial replacement of i to svg tags and configure a MutationObserver
 //import { faXmark, faBars, faCircle } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +14,8 @@ function Navbar(){
     const [button,setButton]=useState(true);
     const handleClick=()=> setClick(!click);
     const closeMobileMenu=()=> setClick(false);
+
+    const {user} = useAuthContext();
 
     const showButton=()=>{
         if(window.innerWidth<=960){
@@ -59,13 +63,23 @@ function Navbar(){
                         Help
                     </Link>
                     </li>
+
+                    {user &&
+                        <li className='nav-item'>
+                            <Link to='/profile' className='nav-links' onClick={closeMobileMenu}>
+                                Profile
+                            </Link>
+                        </li>
+                    }
+                    
                     <li className='nav-item'>
                     <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>
                         Sign Up
                     </Link>
                     </li>
                 </ul>
-                {button && <Button buttonStyle='btn--outline'>LOG IN</Button>}
+                {(button && !user) && <LoginButton buttonStyle='btn--outline'>LOG IN</LoginButton>}
+                {button && user && <LogoutButton buttonStyle='btn--outline'>LOG OUT</LogoutButton>}
             </div>
         </nav>
         </>
