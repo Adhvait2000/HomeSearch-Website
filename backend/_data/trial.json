@@ -1,0 +1,31 @@
+[{
+    "statusBuyRent": "Buy",
+    "propertyPrivatePublic": "Private",
+    "districtNo": "13",
+    "propertyType": "Semi-detahed",
+    "propertyPrice": 100000,
+    "propertyTenure": 999, 
+    "propertyLevels": null,
+    "propertyUnitsAvail": 30,
+    "propertyDeveloperName": null,
+    "propertyPriceSqft": 103,
+    "propertyProjectName": null,
+    "rentalPriceSqft": null,
+    "rentalRefPeriod": null
+},
+{
+    "statusBuyRent": "Buy",
+    "propertyPrivatePublic": "Private",
+    "districtNo": "22",
+    "propertyType": "5-room flat",
+    "propertyPrice": 200000,
+    "propertyTenure": 19, 
+    "propertyLevels": null,
+    "propertyUnitsAvail": 100,
+    "propertyDeveloperName": null,
+    "propertyPriceSqft": 200,
+    "propertyProjectName": null,
+    "rentalPriceSqft": null,
+    "rentalRefPeriod": null 
+}
+]
