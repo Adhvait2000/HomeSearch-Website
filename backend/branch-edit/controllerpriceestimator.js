@@ -32,9 +32,6 @@ exports.getDistrictTypePrices = async (req, res, next) => {
     res.json(results);
 }
 
-
-
-
 exports.getPrices = async(req, res, next)=>{
     const districtNumber = req.query.district;
     const propertyType = req.query.property;
