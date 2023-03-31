@@ -1,4 +1,4 @@
-const mongoose = requrie ('mongoose');
+const mongoose = require ('mongoose');
 const MainData = require('../models/MainData');
 const TownStats = require('../models/TownStats');
 
