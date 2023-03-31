@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const MainDataSchema = new mongoose.Schema({
-  districtNumber: {
-    type: String,
-    required: [true, "Please add a dsitrict number"],
-  },
   statusBuyRent: {
     type: String,
     required: [true, "Please provide status if property is for Buy or Rent"],
