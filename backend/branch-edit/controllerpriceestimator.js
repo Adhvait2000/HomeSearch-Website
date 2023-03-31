@@ -23,9 +23,13 @@ exports.getDistrictTypePrices = async (req, res, next) => {
     const buyStatus  = "Buy";
 
     const results = await MainData.aggregate([
-        {$match : {districtNumber : districtNumber,statusBuyRent :buyStatus, }},
-        {$graoup}
-    ])
+        {$match : {districtNumber : districtNumber,statusBuyRent :buyStatus, propertyPrice : {$exists : true}}},
+        {$group:{
+            _id : '$propertyType',
+            avgPrice :{ $avg : '$propertyPrice' }
+        }}
+    ]);
+    res.json(results);
 }
 
 
