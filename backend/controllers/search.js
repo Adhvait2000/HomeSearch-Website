@@ -77,6 +77,27 @@ exports.getHousingList = async(req,res,next)=>{
                     .sort({rentalPriceSqft : -1})
                     .limit(50)  ;
                 }
+                else {
+                    const query1 = queryParams;
+                    query1.propertyPrice = { $exists : true , $lte : maxPrice };
+                    const query2 = queryParams;
+                    query2.rentalPriceSqft =   {$exists:true, $lte :maxPrice};
+    
+    
+                    const arr1Result  = await MainData.find(query1)
+                        .select('_id districtNumber propertyPrivatePublic statusBuyRent  propertyPrice')
+                        .limit(25)
+                        .sort({propertyPrice: -1}) ;
+    
+                    const arr2Result = await MainData.find(query2)
+                        .select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
+                        .limit (25)
+                        .sort({rentalPriceSqft: -1 });
+    
+                    results = [...arr1Result, ...arr2Result];
+                }
+    
+
             }
             else {
                 if(buyOrRent == "Buy"){
@@ -116,7 +137,7 @@ exports.getBudgetSearch = async(req,res,next)=>{
 
     if(buyOrRent) queryParams.statusBuyRent = buyOrRent;
     if(publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
-    if(maxPrice){
+
         if (maxPrice){
             if(buyOrRent=="Buy")
             {
@@ -132,6 +153,28 @@ exports.getBudgetSearch = async(req,res,next)=>{
                 .sort({rentalPriceSqft : 1})
                 .limit(50)  ;
             }
+            else {
+                const query1 = queryParams;
+                query1.propertyPrice = { $exists : true , $lte : maxPrice };
+                const query2 = queryParams;
+                query2.rentalPriceSqft =   {$exists:true, $lte :maxPrice};
+
+
+                const arr1Result  = await MainData.find(query1)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent  propertyPrice')
+                    .limit(25)
+                    .sort({propertyPrice: 1}) ;
+
+                const arr2Result = await MainData.find(query2)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
+                    .limit (25)
+                    .sort({rentalPriceSqft:1 });
+
+                results = [...arr1Result, ...arr2Result];
+            }
+
+
+
         }
         else {
             if(buyOrRent == "Buy"){
@@ -155,13 +198,13 @@ exports.getBudgetSearch = async(req,res,next)=>{
 
 
                 const arr1Result  = await MainData.find(query1)
-                    .select('_id districtNumber propertyPrivatePublic statusBuyRent propertyPrivate')
-                    .limit(50)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent  propertyPrice')
+                    .limit(25)
                     .sort({propertyPrice: 1}) ;
 
                 const arr2Result = await MainData.find(query2)
                     .select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
-                    .limit (50)
+                    .limit (25)
                     .sort({rentalPriceSqft:1 });
 
                 results = [...arr1Result, ...arr2Result];
@@ -169,11 +212,7 @@ exports.getBudgetSearch = async(req,res,next)=>{
         }
 
         res.json(results);
-    }
-    else {
-        res.json({messaage: 'Enter Max Price to access budget search results'});
-    }
-
+    
 };
 
 
