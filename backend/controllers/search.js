@@ -3,6 +3,20 @@ const mongoose = require ('mongoose');
 const MainData = require('../models/MainData');
 const TownStats = require('../models/TownStats');
 
+exports.getSingleHouseDetails = async (req, res, next) => {
+    try {
+        const houseData = await MainData.findById(req.params.houseid);
+        if (!houseData) {
+            return res.status(404).send("House not found");
+        }
+        res.json(houseData);
+    }catch(err){
+        console.log(err);
+        res.status(500).send("Server error");
+    }
+
+};
+
 exports.getAllTownData = async (req,res, next)=>{
     try{
         const townsList = await TownStats.find({});
