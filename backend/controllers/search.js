@@ -36,8 +36,6 @@ exports.getTownStatistics = async(req,res,next)=>{
             const filteredResults = results.filter();
             res.json(results);
             }
-
-
             
     }   catch(err){
         console.error(err);
