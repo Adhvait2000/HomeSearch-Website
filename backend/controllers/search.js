@@ -28,21 +28,22 @@ exports.getTownStatistics = async(req,res,next)=>{
         else {
             const { maxPrice , buyOrRent, publicOrPrivate } = req.query;
             const queryParams = {};
-            if (buyOrRent) queryParams.buyOrRent = buyOrRent;
-            if (publicOrPrivate) queryParams.publicOrPrivate = publicOrPrivate;
-            if (maxPrice )queryParams.maxPrice  = maxPrice;
-            
-            const results = await MainData.find(queryParams);
-            
-            const filteredResults = results.filter();
+            if (buyOrRent) queryParams.statusBuyRent = buyOrRent;
+            if (publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
+            if (maxPrice )queryParams.propertyPrice  =  { $exists : true ,$lte  :maxPrice };
+
+            const results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent propertyPrice ')
+                            .sort({propertyPrice : -1})
+                            .limit(100)    ;
             res.json(results);
             }
 
     }   catch(err){
         console.error(err);
-        res.status(500).json({message: 'Server error'});
+        res.status(500).json({message: 'Something went wrong in search'});
     }                                 
 };
+
 
 exports.getQuerySearch = async(req,res,next)=>{
     
