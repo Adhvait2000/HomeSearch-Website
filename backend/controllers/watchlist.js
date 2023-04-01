@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const MainData = require('../models/MainData');
+const TownStats = require('../models/TownStats');
+
+
 
 exports.getFullWatchList = async (req,res,next) => {
     const userId = req.params.userId ;

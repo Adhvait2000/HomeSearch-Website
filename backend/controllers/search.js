@@ -3,6 +3,18 @@ const mongoose = require ('mongoose');
 const MainData = require('../models/MainData');
 const TownStats = require('../models/TownStats');
 
+exports.getTownStatistics  = async (req, res, next) => {
+    const districtNumber = req.params.districtNumber;
+    try {
+        const townData = await TownStats.find({districtNumber: districtNumber});
+        res.json(townData);
+    }catch (err) {
+        console.error(err);
+        res.status(500).send({message: "Server error town statss"});
+    }
+};
+
+
 exports.getSingleHouseDetails = async (req, res, next) => {
     try {
         const houseData = await MainData.findById(req.params.houseid);
@@ -46,9 +58,8 @@ exports.getHousingList = async(req,res,next)=>{
     try{
         const districtNum=  req.params.districtNumber;
         const items = await TownStats.find({districtNumber: districtNum});
-
         if(Object.keys(req.query).length==0){
-            const results = await MainData.find({districtNumber: districtNum});
+            const results = await MainData.find({districtNumber: districtNum }).select('_id statusBuyRent propertyPrivatePublic districtNumber propertyType propertyPrice');
             const maxCount = 50;
             const limitedResults  = results.slice(0,maxCount);
             const data = { items, limitedResults};
