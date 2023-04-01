@@ -59,7 +59,7 @@ exports.getHousingList = async(req,res,next)=>{
                 else if (buyOrRent=="Rent") {
                     queryParams.rentalPriceSqft = { $exists : true ,$lte :maxPrice };
                      results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
-                    .sort({propertyPrice : -1})
+                    .sort({rentalPriceSqft : -1})
                     .limit(50)  ;
                 }
             }
@@ -82,11 +82,9 @@ exports.getHousingList = async(req,res,next)=>{
                         .limit(100) ;
                 }
             }
-
             res.json(results);
             }
-
-     
+            
     } catch(err){
         console.error(err);
         res.status(500).json({message: 'Something went wrong in search'});
@@ -110,13 +108,13 @@ exports.getBudgetSearch = async(req,res,next)=>{
                 queryParams.propertyPrice  =  { $exists : true ,$lte  :maxPrice };
 
                  results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent propertyPrice ')
-                .sort({propertyPrice : -1})
+                .sort({propertyPrice : 1})
                 .limit(50)  ;
             }
             else if (buyOrRent=="Rent") {
                 queryParams.rentalPriceSqft = { $exists : true ,$lte :maxPrice };
                  results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
-                .sort({propertyPrice : -1})
+                .sort({rentalPriceSqft : 1})
                 .limit(50)  ;
             }
         }
@@ -131,12 +129,27 @@ exports.getBudgetSearch = async(req,res,next)=>{
                 queryParams.rentalPriceSqft = {  $exists: true };
                 results = await MainData.find(queryParams)
                 .select('_id districtNumber propertyPrivatePublic statusBuyRent')
-                .limit(50);
+                .limit(50)
+                .sort();
             }
             else {
-                results = await MainData.find(queryParams)
-                    .select('_id districtNumber propertyPrivatePublic statusBuyRent')
-                    .limit(100) ;
+                const query1 = queryParams;
+                query1.propertyPrice = { $exists : true };
+                const query2 = queryParams;
+                query2.rentalPriceSqft =   {$exists:true};
+
+
+                const arr1Result  = await MainData.find(query1)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent propertyPrivate')
+                    .limit(50)
+                    .sort({propertyPrice: 1}) ;
+
+                const arr2Result = await MainData.find(query2)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
+                    .limit (50)
+                    .sort({rentalPriceSqft:1 });
+
+                results = [...arr1Result, ...arr2Result];
             }
         }
 
