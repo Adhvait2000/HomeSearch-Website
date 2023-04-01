@@ -46,7 +46,7 @@ exports.getHousingList = async(req,res,next)=>{
             const queryParams = {};
             if (buyOrRent) queryParams.statusBuyRent = buyOrRent;
             if (publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
-            if (maxPrice ){
+            if (maxPrice){
                 if(buyOrRent=="Buy")
                 {
                     queryParams.propertyPrice  =  { $exists : true ,$lte  :maxPrice };
@@ -55,7 +55,7 @@ exports.getHousingList = async(req,res,next)=>{
                     .sort({propertyPrice : -1})
                     .limit(50)  ;
                 }
-                else if (buyOrRent=="Rent")) {
+                else if (buyOrRent=="Rent") {
                     queryParams.rentalPriceSqft = { $exists : true ,$lte :maxPrice };
                      results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
                     .sort({propertyPrice : -1})
@@ -65,18 +65,21 @@ exports.getHousingList = async(req,res,next)=>{
             else {
                 if(buyOrRent == "Buy"){
                     queryParams.propertyPrice  =  { $exists : true };
-                    reuslts = await MainData.find(queryParams).select ('_id districtNumber')
+                    results = await MainData.find(queryParams).select ('_id districtNumber');
                     
                 }
+                else if (buyOrRent == "Rent"){
+                    queryParams.rentalPriceSqft = {  $exists: true };
+                    results = await MainData.find(queryParams).select('_id districtNumber');
+                }
 
-
-
-
-
-
-
-                results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent'
+                else {
+                    results = await MainData.find(queryParams)
+                        .select('_id districtNumber propertyPrivatePublic statusBuyRent')
+                        .limit(100) ;
+                }
             }
+
             res.json(results);
             }
 
