@@ -18,7 +18,7 @@ const Searchbar = ({setResults}) => {
             searchService.lowestPriceSearch(
                 searchQuery['districtNumber'],
                 searchQuery['maxPrice'] ? searchQuery['maxPrice'] : false, //since, if maxPrice=0, its still considered truthy
-                searchQuery['buyOrRent'],
+                searchQuery['buyRent'],
                 searchQuery['publicOrPrivate']
                 )
         }
@@ -27,8 +27,8 @@ const Searchbar = ({setResults}) => {
             searchService.highestPriceSearch(
                 searchQuery['districtNumber'],
                 searchQuery['maxPrice'] ? searchQuery['maxPrice'] : false, //since, if maxPrice=0, its still considered truthy
-                searchQuery['buyOrRent'],
-                searchQuery['publicOrPrivate']
+                searchQuery['buyRent'],
+                searchQuery['propertyType']
                 )
         }
 
@@ -41,11 +41,12 @@ const Searchbar = ({setResults}) => {
         <div className="searchbar">
             <form onSubmit={submitQuery}>
                 <select name="buyRent" className="searchbarForm">
-                    <option value="buy">Buy</option>
-                    <option value="rent">Rent</option>
+                    <option value="Buy">Buy</option>
+                    <option value="Rent">Rent</option>
                 </select>
 
                 <select name="districtNumber" className="searchbarForm" defaultValue="default">
+                    <option value="1000">District</option>
                 {
                     dropdownList.map(district => 
                     <option value={district.districtNumber}> {district.generalLocation} </option>
@@ -55,8 +56,8 @@ const Searchbar = ({setResults}) => {
                 </select> 
 
                 <select name="propertyType" className="searchbarForm" defaultValue="default">
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
                 </select>
 
                 <input type="number" name="maxPrice" className="searchbarForm" placeholder="Max Price"/>
