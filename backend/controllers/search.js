@@ -12,7 +12,7 @@ exports.getAllTownData = async (req,res, next)=>{
     }
 };
 
-exports.getTownStatistics = async(req,res,next)=>{
+exports.getHousingList = async(req,res,next)=>{
     try{
         const districtNum=  req.params.districtNumber;
         const items = await TownStats.find({districtNumber: districtNum});
