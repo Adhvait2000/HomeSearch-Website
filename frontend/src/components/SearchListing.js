@@ -1,7 +1,7 @@
 import React, { useState,useEffect} from 'react';
 import { List, ListContent} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import './TempDisplay.css';
+import './SearchListing.css';
 
 
 
@@ -9,7 +9,7 @@ import './TempDisplay.css';
 // const token = localStorage.getItem('token');
 
 const userid = 1;
-function HousingDetails(){
+function SearchListing(){
 //random datafor test
    const datajson=[
         {
@@ -58,10 +58,10 @@ function HousingDetails(){
 //     });
 
     return(
-        <div className='housing-list-container'>
+        <div className='search-list-container'>
         {datajson.map(house => {
           return (
-            <div className='housingdetails' key={house.id}>
+            <div className='listing' key={house.id}>
               <List.List as='ul'>
                 <h1 block key={house.id}></h1>
                 <table>
@@ -80,7 +80,7 @@ function HousingDetails(){
                     </tr>
                     <tr>
                       <td colSpan="2">
-                        <button>Add to watchlist</button>
+                        <button onClick={()=>addListing(house.id)}>Add to watchlist</button>
                       </td>
                     </tr>
                   </tbody>
@@ -95,4 +95,4 @@ function HousingDetails(){
     )
 }
 
-export default HousingDetails;
+export default SearchListing;

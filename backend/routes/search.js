@@ -10,3 +10,4 @@ router.get('/:houseid', protect,SearchController.getSingleHouseDetails)
 router.get('/budget-towns', protect,SearchController.getBudgetTowns);
 
 module.exports = router;
+

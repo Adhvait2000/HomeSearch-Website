@@ -29,17 +29,6 @@ const Searchbar = ({setResults}) => {
                     <option value="landed">Landed</option>
                 </select> 
 
-                <select name="rooms" className="searchbarForm" defaultValue="default">
-                    <option value="default" disabled>No. of Rooms</option>
-                    <option value="all">All</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value=">5">&gt;5</option>
-                </select> 
-
                 <input type="number" name="minPrice" className="searchbarForm" placeholder="Min Price"/>
                 <input type="number" name="maxPrice" className="searchbarForm" placeholder="Max Price"/>
                 <button type="submit" className="searchbarForm">Search</button>
