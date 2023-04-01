@@ -87,8 +87,8 @@ app.use((req, res, next) => {
 
 app.use("/homesearch/v1/auth", auth);
 app.use("/homesearch/v1/watchlist", watchlist);
-app.use("/homsearch/v1/search",search);
-app.use("/homsearch/v1/estimator",priceestimator);
+app.use("/homesearch/v1/search",search);
+app.use("/homesearch/v1/estimator",priceestimator);
 
 
 // Error Handler

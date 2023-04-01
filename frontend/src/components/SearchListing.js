@@ -1,6 +1,7 @@
 import React, { useState,useEffect} from 'react';
 import { List, ListContent} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import watchlistService from '../services/watchlistService';
 import './SearchListing.css';
 
 
@@ -10,6 +11,10 @@ import './SearchListing.css';
 
 const userid = 1;
 function SearchListing(){
+  const addListing = (itemId) => {
+      return;
+  }
+
 //random datafor test
    const datajson=[
         {
