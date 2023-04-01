@@ -44,6 +44,7 @@ exports.getHousingList = async(req,res,next)=>{
             let results ;
             const { maxPrice , buyOrRent, publicOrPrivate } = req.query;
             const queryParams = {};
+            queryParams.districtNumber = districtNum;
             if (buyOrRent) queryParams.statusBuyRent = buyOrRent;
             if (publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
             if (maxPrice){
@@ -65,14 +66,16 @@ exports.getHousingList = async(req,res,next)=>{
             else {
                 if(buyOrRent == "Buy"){
                     queryParams.propertyPrice  =  { $exists : true };
-                    results = await MainData.find(queryParams).select ('_id districtNumber');
-                    
+                    results = await MainData.find(queryParams)
+                        .select ('_id districtNumber propertyPrivatePublic statusBuyRent')
+                        .limit(50);
                 }
                 else if (buyOrRent == "Rent"){
                     queryParams.rentalPriceSqft = {  $exists: true };
-                    results = await MainData.find(queryParams).select('_id districtNumber');
+                    results = await MainData.find(queryParams)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent')
+                    .limit(50);
                 }
-
                 else {
                     results = await MainData.find(queryParams)
                         .select('_id districtNumber propertyPrivatePublic statusBuyRent')
@@ -83,7 +86,8 @@ exports.getHousingList = async(req,res,next)=>{
             res.json(results);
             }
 
-    }   catch(err){
+     
+    } catch(err){
         console.error(err);
         res.status(500).json({message: 'Something went wrong in search'});
     }                                 
@@ -92,21 +96,52 @@ exports.getHousingList = async(req,res,next)=>{
 
 exports.getBudgetSearch = async(req,res,next)=>{
     const districtNum=  req.params.districtNumber ;
-    let reuslts ;
+    let results ;
     const {maxPrice , buyOrRent, publicOrPrivate} = req.query;
     const queryParams = {};
+    queryParams.districtNumber = districtNum;
+
     if(buyOrRent) queryParams.statusBuyRent = buyOrRent;
     if(publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
     if(maxPrice){
-        if(buyOrRent =="Buy"){
-            queryParams.propertyPrice = {$exists : true , $lte : maxPrice}
-            results = await MainData.find(queryParams).select('_id distictNumber propertyPrivatePublic statusBuyRent renta')
+        if (maxPrice){
+            if(buyOrRent=="Buy")
+            {
+                queryParams.propertyPrice  =  { $exists : true ,$lte  :maxPrice };
+
+                 results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent propertyPrice ')
+                .sort({propertyPrice : -1})
+                .limit(50)  ;
+            }
+            else if (buyOrRent=="Rent") {
+                queryParams.rentalPriceSqft = { $exists : true ,$lte :maxPrice };
+                 results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
+                .sort({propertyPrice : -1})
+                .limit(50)  ;
+            }
         }
+        else {
+            if(buyOrRent == "Buy"){
+                queryParams.propertyPrice  =  { $exists : true };
+                results = await MainData.find(queryParams)
+                    .select ('_id districtNumber propertyPrivatePublic statusBuyRent')
+                    .limit(50);
+            }
+            else if (buyOrRent == "Rent"){
+                queryParams.rentalPriceSqft = {  $exists: true };
+                results = await MainData.find(queryParams)
+                .select('_id districtNumber propertyPrivatePublic statusBuyRent')
+                .limit(50);
+            }
+            else {
+                results = await MainData.find(queryParams)
+                    .select('_id districtNumber propertyPrivatePublic statusBuyRent')
+                    .limit(100) ;
+            }
+        }
+
+        res.json(results);
     }
-
-
-
-
 
     const budgetTowns = await TownStats.find({}).select('_id districtNumber generalLocation averagePriceAll')
                         .sort({avgeragePriceAll : 1})
