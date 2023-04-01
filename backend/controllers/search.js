@@ -1,3 +1,4 @@
+const { query } = require('express');
 const mongoose = require ('mongoose');
 const MainData = require('../models/MainData');
 const TownStats = require('../models/TownStats');
@@ -40,14 +41,28 @@ exports.getHousingList = async(req,res,next)=>{
                     .sort({propertyPrice : -1})
                     .limit(50)  ;
                 }
-                else {
+                else if (buyOrRent=="Rent")) {
                     queryParams.rentalPriceSqft = { $exists : true ,$lte :maxPrice };
                      results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent rentalPriceSqft')
                     .sort({propertyPrice : -1})
                     .limit(50)  ;
                 }
             }
-            
+            else {
+                if(buyOrRent == "Buy"){
+                    queryParams.propertyPrice  =  { $exists : true };
+                    reuslts = await MainData.find(queryParams).select ('_id districtNumber')
+                    
+                }
+
+
+
+
+
+
+
+                results = await MainData.find(queryParams).select('_id districtNumber propertyPrivatePublic statusBuyRent'
+            }
             res.json(results);
             }
 
@@ -58,17 +73,19 @@ exports.getHousingList = async(req,res,next)=>{
 };
 
 
-exports.getQuerySearch = async(req,res,next)=>{
-    
-};
-
-
 exports.getBudgetSearch = async(req,res,next)=>{
     const districtNum=  req.params.districtNumber ;
-    const buyOrRent = req.query;
+    let reuslts ;
+    const {maxPrice , buyOrRent, publicOrPrivate} = req.query;
     const queryParams = {};
-    if(buyOrRent) queryParams.buyOrRent = buyOrRent;
-    
+    if(buyOrRent) queryParams.statusBuyRent = buyOrRent;
+    if(publicOrPrivate) queryParams.propertyPrivatePublic = publicOrPrivate;
+    if(maxPrice){
+        if(buyOrRent =="Buy"){
+            queryParams.propertyPrice = {$exists : true , $lte : maxPrice}
+            results = await MainData.find(queryParams).select('_id distictNumber propertyPrivatePublic statusBuyRent renta')
+        }
+    }
 
 
 

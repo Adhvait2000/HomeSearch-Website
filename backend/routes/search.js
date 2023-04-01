@@ -5,8 +5,7 @@ const SearchController = require('../controllers/search');
 
 router.get('/dropdown-data',protect,SearchController.getAllTownData );
 router.get('/:districtNumber', protect, SearchController.getHousingList);
-router.get('/query-search',protect,SearchController.getQuerySearch);
 router.get('/:districtNumber/budgetOptions', protect,SearchController.getBudgetSearch);
-
+router.get('/:housing_id', protect,SearchController.getSingleHouseDetails)
 
 module.exports = router;
