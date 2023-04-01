@@ -21,7 +21,7 @@ const users = JSON.parse(
 );
 
 const maindata = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/trial.json`, "utf-8")
+  fs.readFileSync(`${__dirname}/_data/mainDataset.json`, "utf-8")
 );
 
 // Import into DB
