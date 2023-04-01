@@ -172,21 +172,22 @@ exports.getBudgetSearch = async(req,res,next)=>{
 
                 results = [...arr1Result, ...arr2Result];
             }
-            
+
         }
         else {
             if(buyOrRent == "Buy"){
                 queryParams.propertyPrice  =  { $exists : true };
                 results = await MainData.find(queryParams)
                     .select ('_id districtNumber propertyPrivatePublic statusBuyRent')
-                    .limit(50);
+                    .limit(50)
+                    .sort({propertyPrice: 1});
             }
             else if (buyOrRent == "Rent"){
                 queryParams.rentalPriceSqft = {  $exists: true };
                 results = await MainData.find(queryParams)
                 .select('_id districtNumber propertyPrivatePublic statusBuyRent')
                 .limit(50)
-                .sort();
+                .sort({rentalPriceSqft:1});
             }
             else {
                 const query1 = queryParams;
