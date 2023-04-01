@@ -4,7 +4,7 @@ import '../App.css' ;
 import img from './hhhh.jpg';
 function HeroSection(){
     return(
-        <div style={{ backgroundImage:`url(${img})`,backgroundRepeat:"no-repeat",backgroundSize:"cover",height:500,
+        <div style={{ backgroundImage:`url(${img})`,backgroundRepeat:"no-repeat",backgroundSize:"cover",height: 700,
         width:"1000"
         }}>
             <div className='hero-text'>

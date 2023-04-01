@@ -1,18 +1,34 @@
 .search-float{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 0 10px;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-.search-container{
-    border: solid;
-    border-width: 1px;
-    border-color:aliceblue;
     display: flex;
+    width:100%;
+    float:right;
+    height: 50%;
+    box-sizing: border-box;
+    border: solid;
+    border-width: 3px;
+    border-color:#f6dfdf;
     flex-direction: row;
+    padding-bottom: 150px;
+  } 
+
+.side-menu{
+    width: 100%;
+    float:left;
+    height:50%;
+    box-sizing:border-box;
+    border: solid;
+    border-width: 3px;
+    border-color:#f6dfdf;
+    flex-direction: row;
+}
+
+.floater {
+    column-count: 2;
+    background-color: #fff;
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+  }
+

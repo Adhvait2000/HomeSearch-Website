@@ -8,7 +8,7 @@ const { protect } = require("../middleware/auth");
 //for add to watchlist post request send the mongoddb id as body
 
 router.get('/:userId',protect,WatchlistController.getFullWatchList );
-router.post('/:userId',protect,WatchlistController.addToWatchlist);
+router.post('/:userId',protect,WatchlistController.addToWatchlist); //
 router.delete('/:userId/:itemId',protect,WatchlistController.removeFromWatchlist);
 router.get('/:userId/:itemId', protect,WatchlistController.retrieveHousingDev);
 

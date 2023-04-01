@@ -1,6 +1,7 @@
 
   .google-map {
-    width: 100%;
+    display: flex;
+    flex-grow: 1;
     height: 60vh;
     min-height: 1000px;
   }
@@ -28,5 +29,5 @@
   
     .pin-icon {
       font-size: 10vw;
-    }
+    } 
   }
