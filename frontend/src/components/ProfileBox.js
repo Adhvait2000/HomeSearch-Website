@@ -5,10 +5,22 @@ import profileService from '../services/profileService';
 
 
 const ProfileBox = () => {
-    const [notificationMessage, setNotificationMessage] = useState(''); //can use for error or input validation.
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [email, setEmail] = useState('');
+    const [profilename, setProfilename] = useState('');
+    
+    const userdetails = JSON.parse(localStorage.getItem('user-details'));
+    
+    useEffect(() => {
+      if (!userdetails) {
+        setNotificationMessage("Oh dear, seems you aren't logged in!");
+      } else {
+        setEmail(userdetails.email);
+        setProfilename(userdetails.name);
+      }
+    }, [userdetails]);
+    
 
-    const email = "test@email.com";
-    const name = "John Doe";
 
     const changePass = (event) => {
         event.preventDefault();
@@ -28,18 +40,17 @@ const ProfileBox = () => {
     return (
         <div className="box">
             <Notification message={notificationMessage}/>
-            <p className="large-text"><strong>Welcome, {name}</strong></p>
-            <p>Email: {email}</p>
-            <p>Name: {name}</p>
-            <hr className="line"></hr>
-            <form className="changepass-form" onSubmit={changePass}>
-                <input name="password" className="changepass-form-input" type="password" placeholder="Current Password"/>
-                <input name="newPassword" className="changepass-form-input" type="password" placeholder="New Password"/>
-                <input name="confirmPassword" className="changepass-form-input" type="password" placeholder="Confirm Password"/>
-                <button className="login-button" type="submit">Change Password</button>
-            </form>
-
-            <hr></hr>
+            {userdetails && <div>
+                <p className="large-text"><strong>Welcome, {profilename}</strong></p>
+                <p>Email: {email}</p>
+                <hr className="line"></hr>
+                <form className="changepass-form" onSubmit={changePass}>
+                    <input name="password" className="changepass-form-input" type="password" placeholder="Current Password"/>
+                    <input name="newPassword" className="changepass-form-input" type="password" placeholder="New Password"/>
+                    <input name="confirmPassword" className="changepass-form-input" type="password" placeholder="Confirm Password"/>
+                    <button className="login-button" type="submit">Change Password</button>
+                </form>
+            </div>}
         </div>
     )
 }

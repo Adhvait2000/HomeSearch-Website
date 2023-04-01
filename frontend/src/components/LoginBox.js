@@ -2,15 +2,25 @@ import loginSignupService from '../services/loginSignupService';
 import Notification from './Notification';
 import { useState, useEffect } from 'react';
 import {useLogin} from '../hooks/useLogin';
+import {useNavigate} from 'react-router-dom';
 
 const LoginBox = ({isLoginBox, setLoginOrSignupBox}) => {
     const {login, notificationMessage, setNotificationMessage} = useLogin();
+    const navigate = useNavigate()
 
     const submitLogin = (event) => { //the actual login event, shouldve probably moved somewhere else but fuck it lol
         event.preventDefault(); 
         const formData = new FormData(event.target);
         const loginForm = Object.fromEntries(formData);
-        login(loginForm['email'], loginForm['password']);
+        login(loginForm['email'], loginForm['password'])
+        .then(response => {
+            if (response==='success'){
+                localStorage.setItem(
+                    'user-details', 
+                    JSON.stringify({'email': loginForm['email'], 'name': loginForm['name']}))
+                navigate("/");
+            }
+        });
     }
 
     

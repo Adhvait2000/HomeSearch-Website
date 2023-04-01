@@ -2,10 +2,11 @@ import loginSignupService from '../services/loginSignupService';
 import Notification from './Notification';
 import { useState, useEffect } from 'react';
 import {useSignup} from '../hooks/useSignup';
-
+import {useNavigate} from "react-router-dom";
 
 const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
     const {signup, notificationMessage, setNotificationMessage} = useSignup();
+    const navigate = useNavigate();
 
     const submitSignup = (event) => {
         event.preventDefault(); 
@@ -16,7 +17,17 @@ const SignupBox = ({isLoginBox, setLoginOrSignupBox}) => {
             setNotificationMessage('Please confirm your password properly.');
             return;
         }
-        signup(signupForm['name'], signupForm['email'], signupForm['password']);
+        signup(signupForm['name'], signupForm['email'], signupForm['password'])
+        .then(response => {
+            if (response==='success'){
+                localStorage.setItem(
+                    'user-details', 
+                    JSON.stringify({'email': signupForm['email'], 'name': signupForm['name']}))
+                navigate("/");
+            }
+        });
+        
+
     }
 
 
