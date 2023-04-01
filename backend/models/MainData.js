@@ -12,7 +12,7 @@ const MainDataSchema = new mongoose.Schema({
       "Please provide if property belongs to the Private or Public category",
     ],
   },
-  districtNo: {
+  districtNumber: {
     type: String,
     required: [true, "Please add a district number"],
   },
