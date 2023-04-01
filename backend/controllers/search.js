@@ -34,8 +34,8 @@ exports.getBudgetTowns = async (req, res, next) => {
 
 exports.getAllTownData = async (req,res, next)=>{
     try{
-        const townsList = await TownStats.find({});
-        res.json(townsList);
+        const townsList = await TownStats.find({}).sort({districtNumber:-1});
+        res.json(townsList); 
     }catch(err){
         console.error(err);
         res.status(500).json({message: 'Server error'});
