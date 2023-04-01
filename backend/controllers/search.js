@@ -115,7 +115,7 @@ exports.getHousingList = async(req,res,next)=>{
                 else {
                     results = await MainData.find(queryParams)
                         .select('_id districtNumber propertyPrivatePublic statusBuyRent')
-                        .limit(100) ;
+                        .limit(50) ;
                 }
             }
             res.json(results);
