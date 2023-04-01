@@ -1,16 +1,40 @@
 import React, { useState,useEffect} from 'react';
+import searchService from '../services/searchService';
 import './Searchbar.css';
 
 const Searchbar = ({setResults}) => {
+    const [dropdownList, setDropdownList] = useState([]);
 
-    const submitQuery = (event) => {
+    searchService.getDropdownData()
+    .then(results => setDropdownList(results));
+
+    const submitQuery = (event) => { 
         event.preventDefault();
         const formData = new FormData(event.target);
         const searchQuery = Object.fromEntries(formData);
         console.log(searchQuery);
 
-        //TO DO: pass to backend and get the query
+        if (searchQuery['sortBy']==='asc'){
+            searchService.lowestPriceSearch(
+                searchQuery['districtNumber'],
+                searchQuery['maxPrice'] ? searchQuery['maxPrice'] : false, //since, if maxPrice=0, its still considered truthy
+                searchQuery['buyOrRent'],
+                searchQuery['publicOrPrivate']
+                )
+        }
+        
+        else if (searchQuery['sortBy']==='desc'){
+            searchService.highestPriceSearch(
+                searchQuery['districtNumber'],
+                searchQuery['maxPrice'] ? searchQuery['maxPrice'] : false, //since, if maxPrice=0, its still considered truthy
+                searchQuery['buyOrRent'],
+                searchQuery['publicOrPrivate']
+                )
+        }
+
+        else return;
     }
+
 
 
     return (
@@ -21,16 +45,28 @@ const Searchbar = ({setResults}) => {
                     <option value="rent">Rent</option>
                 </select>
 
-                <select name="propertyType" className="searchbarForm" defaultValue="default">
-                    <option value="default" disabled>Property Type</option>
-                    <option value="all">All</option>
-                    <option value="hdb">HDB Flat</option>
-                    <option value="condo">Condominum</option>
-                    <option value="landed">Landed</option>
+                <select name="districtNumber" className="searchbarForm" defaultValue="default">
+                {
+                    dropdownList.map(district => 
+                    <option value={district.districtNumber}> {district.generalLocation} </option>
+                    )
+                }
+
                 </select> 
 
-                <input type="number" name="minPrice" className="searchbarForm" placeholder="Min Price"/>
+                <select name="propertyType" className="searchbarForm" defaultValue="default">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+
                 <input type="number" name="maxPrice" className="searchbarForm" placeholder="Max Price"/>
+                
+                <select name="sortBy" className="searchbarForm" defaultValue="default">
+                    <option value='' default disabled>Sort By</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
                 <button type="submit" className="searchbarForm">Search</button>
             </form>
         </div>

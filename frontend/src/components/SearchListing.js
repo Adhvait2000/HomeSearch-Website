@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { List, ListContent} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import watchlistService from '../services/watchlistService';
@@ -10,7 +10,13 @@ import './SearchListing.css';
 // const token = localStorage.getItem('token');
 
 const userid = 1;
-function SearchListing(){
+const SearchListing = () => {
+  const [searchResults, setSearchResults] = useState({});
+
+  const fetchNewSearchResults = async () => {
+
+  }
+
   const addListing = (itemId) => {
       return;
   }
@@ -33,7 +39,7 @@ function SearchListing(){
             "District": "40"
         },
         {
-            "id": 2,
+            "id": 3,
             "type": "condo",
             "Buy_Rent": "rent",
             "private/public": "private",
@@ -41,7 +47,7 @@ function SearchListing(){
         },
         
         {
-            "id": 3,
+            "id": 4,
             "type": "building",
             "Buy_Rent": "rent",
             "private/public": "private",
@@ -68,7 +74,7 @@ function SearchListing(){
           return (
             <div className='listing' key={house.id}>
               <List.List as='ul'>
-                <h1 block key={house.id}></h1>
+                <h1 key={house.id}></h1>
                 <table>
                   <tbody>
                     <tr>
