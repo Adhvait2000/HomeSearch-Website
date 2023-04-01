@@ -8,7 +8,7 @@ exports.getFullWatchList = async (req,res,next) => {
         const userData = await User.findOne({_id: userId});
         res.json(userData.watchlist);
     }catch (err) {
-        res.status(500).send(err)  ;
+        res.status(500).send(err) ;
 
     }
 };
