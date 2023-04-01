@@ -32,7 +32,6 @@ const newprice = JSON.parse(
 // Import into DB
 const importData = async () => {
   try {
-    // await MainData.create(maindata);
     await User.create(users);
     await MainData.create(maindata);
     await TownStats.create(newprice);

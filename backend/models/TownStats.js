@@ -8,28 +8,28 @@ const TownStatsSchema = new mongoose.Schema({
   averagePricePvt: {
     type: Number,
     required: [
-      true,
+      false,
       "Please add an average price for private houses in this district number",
     ],
   },
   averagePricePublic: {
     type: Number,
     required: [
-      true,
+      false,
       "Please add an average price for public houses in this district number",
     ],
   },
   averagePriceAll: {
     type: Number,
     required: [
-      true,
+      false,
       "Please add an average price for both private and public houses in this district number",
     ],
   },
-  generalLocation:{
+  generalLocation: {
     type: [String],
     required: [true, "Please add a general location"],
-    default : [],
+    default: [],
   },
 });
 
