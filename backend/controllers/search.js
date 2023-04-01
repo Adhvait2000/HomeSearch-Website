@@ -14,7 +14,7 @@ exports.getAllTownData = async (req,res, next)=>{
 
 exports.getTownStatistics = async(req,res,next)=>{
     try{
-        const districtNum=  req.params.districtNumber ;
+        const districtNum=  req.params.districtNumber;
         const items = await TownStats.find({districtNumber: districtNum});
 
         if(Object.keys(req.query).length==0){
@@ -22,21 +22,22 @@ exports.getTownStatistics = async(req,res,next)=>{
             const maxCount = 50;
             const limitedResults  = results.slice(0,maxCount);
             const data = { items, limitedResults};
-
             res.json(data);
     
         }
         else {
-            const { rentalPrice,buyPrice , buyOrRent, publicOrPrivate } = req.query;
+            const { maxPrice , buyOrRent, publicOrPrivate } = req.query;
             const queryParams = {};
             if (buyOrRent) queryParams.buyOrRent = buyOrRent;
             if (publicOrPrivate) queryParams.publicOrPrivate = publicOrPrivate;
-            const  results = await MainData.find(queryParams);
-
+            if (maxPrice )queryParams.maxPrice  = maxPrice;
+            
+            const results = await MainData.find(queryParams);
+            
             const filteredResults = results.filter();
             res.json(results);
             }
-            
+
     }   catch(err){
         console.error(err);
         res.status(500).json({message: 'Server error'});
