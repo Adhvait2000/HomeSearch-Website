@@ -17,6 +17,21 @@ exports.getSingleHouseDetails = async (req, res, next) => {
 
 };
 
+
+exports.getBudgetTowns = async (req, res, next) => {
+    
+    try{
+        const budgetTowns = await TownStats.find({}).select('_id districtNumber generalLocation averagePriceAll')
+                        .sort({avgeragePriceAll : 1})
+                        .limit(7);
+    res.json(budgetTowns);
+    }catch (err){
+        console.log(err);
+        res.status(500).send("Server error");
+    }
+
+};
+
 exports.getAllTownData = async (req,res, next)=>{
     try{
         const townsList = await TownStats.find({});
@@ -84,7 +99,7 @@ exports.getHousingList = async(req,res,next)=>{
             }
             res.json(results);
             }
-            
+
     } catch(err){
         console.error(err);
         res.status(500).json({message: 'Something went wrong in search'});
@@ -155,14 +170,10 @@ exports.getBudgetSearch = async(req,res,next)=>{
 
         res.json(results);
     }
+    else {
+        res.json({messaage: 'Enter Max Price to access budget search results'});
+    }
 
-    const budgetTowns = await TownStats.find({}).select('_id districtNumber generalLocation averagePriceAll')
-                        .sort({avgeragePriceAll : 1})
-                        .limit(7);
-
-    
-    const data = {budgetTowns,}
-    res.json(data);
 };
 
 
