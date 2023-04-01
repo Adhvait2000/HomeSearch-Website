@@ -172,9 +172,7 @@ exports.getBudgetSearch = async(req,res,next)=>{
 
                 results = [...arr1Result, ...arr2Result];
             }
-
-
-
+            
         }
         else {
             if(buyOrRent == "Buy"){
