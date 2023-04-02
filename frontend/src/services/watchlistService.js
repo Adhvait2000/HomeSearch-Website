@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {Buffer} from 'buffer';
 import tokenAndHeaderPrep from './tokenAndHeaderPrep';
 
 const baseUrl = '/homesearch/v1/watchlist';
@@ -19,13 +18,13 @@ const getWatchlist = async () => {
       });
 }
 
-const addToWatchlist = async () => {
+const addToWatchlist = async (itemId) => {
     const userId = tokenAndHeaderPrep.getUserId();
     if (!userId) {
         console.log('No user is logged in.');
         return;
     }
-    return axios.post(`${baseUrl}/${userId}`, {
+    return axios.post(`${baseUrl}/${userId}/${itemId}`, {
         headers: tokenAndHeaderPrep.getAuthHeaders()
       });
 }
