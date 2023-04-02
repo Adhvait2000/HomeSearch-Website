@@ -54,9 +54,8 @@ exports.getPrices = async(req, res, next)=>{
         },0);
         const averagePrice  = totalPrice/filteredResults.length;
 
-        // res.send('Estimated house price  : ${averagePrice}');
-        res.send({averagePrice});
-        // res.json(averagePrice);
+        res.send({"Estimated house price" : `${averagePrice}`});
+
     }catch(err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
