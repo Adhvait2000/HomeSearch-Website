@@ -43,7 +43,7 @@ exports.addToWatchlist = async (req,res,next) => {
         const userData = await User.findById(userId).populate('watchlist');
         if (!userData) {
             return res.status(404).json({ message: 'User not found' });
-          }
+        }
         
         const itemIndex = userData.watchlist.findIndex(item =>item._id.toString()===itemId)
         if(itemIndex !== -1){
@@ -55,18 +55,10 @@ exports.addToWatchlist = async (req,res,next) => {
             return res.status(404).json({message:"Housing data not found"});
 
         }
-
-            // curWatchlist.push(housingData);
-            // res.json(userData);
-            // await userData.save();
-
-            // res.json(housingData);
-            // res.json({message : "Watchlist item added"})
-        // const newWatchlist = await User.findOne({_id:userId}).watchlist;;
-
-        // res.json(newWatchlist);
-        res.json({message : "Watchlist"});
-
+        userData.watchlist.push(item);
+        await userData.save();
+        res.json(userData.watchlist);
+        
     }catch(err) {
         res.status(500).send({message : "watchlist add error"}) ;
     }
