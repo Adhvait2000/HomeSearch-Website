@@ -47,7 +47,6 @@ exports.getPrices = async(req, res, next)=>{
         });
         if(filteredResults.length==0){
             return res.status(404).send('No data found for given criteria');
-            
         }
         const totalPrice = filteredResults.reduce((acc,data)=>{
             return acc+data.propertyPrice;
