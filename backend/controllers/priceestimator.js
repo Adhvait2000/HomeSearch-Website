@@ -1,6 +1,7 @@
 const MainData = require('../models/MainData');
 const TownStats = require('../models/TownStats');
 const fs = require('fs');
+const path = require('path');
 
 // exports.getDistrictTypePrices = async (req, res, next) => {
 //     const {districtNumber} = req.params;
@@ -63,8 +64,8 @@ exports.getPrices = async(req, res, next)=>{
 
 
 exports.getPropertyTypeList = async(req, res, next)=>{
-     
-        fs.readFile('../_data/property_type.json', (err, data)=>{
+    const filePath = path.join(__dirname, '../_data/property_type.json');
+        fs.readFile(filePath, (err, data)=>{
             if(err){
                 console.error(err);
                 res.status(500).send('error reding file') ;
