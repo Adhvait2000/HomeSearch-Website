@@ -129,7 +129,10 @@ exports.getHousingList = async(req,res,next)=>{
                         .limit(50) ;
                 }
             }
-            res.json(results);
+            if(results.length ==0)
+                res.json({message:"No results found for the sepcified filters."});
+            else 
+                res.json(results);
             }
 
     } catch(err){
@@ -220,8 +223,10 @@ exports.getBudgetSearch = async(req,res,next)=>{
                 results = [...arr1Result, ...arr2Result];
             }
         }
-
-        res.json(results);
+        if(results.length ==0)
+            res.json({message:"No results found for the sepcified filters."});
+        else 
+            res.json(results);
     
 };
 

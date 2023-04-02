@@ -58,7 +58,7 @@ exports.addToWatchlist = async (req,res,next) => {
         userData.watchlist.push(item);
         await userData.save();
         res.json(userData.watchlist);
-        
+
     }catch(err) {
         res.status(500).send({message : "watchlist add error"}) ;
     }
@@ -70,18 +70,25 @@ exports.removeFromWatchlist = async (req,res,next) => {
     const itemId = req.params.itemId;
     
     try{
-        const userData = await User.findOne({_id: userId});
-        const curWatchlist = userData.watchlist;
-        const watchlistItem = await curWatchlist.find({_id: itemId});
+        const userData = await User.findById(userId).populate('watchlist');
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const itemIndex = userData.watchlist.findIndex(item =>item._id.toString()===itemId)
+        if(itemIndex === -1){
+            return res.status(400).json({message: "Item not present in watchlist"});
 
-        if(!watchlistItem ){
-            res.status (404).send("Watchlist item not found.");
         }
-        else{
-            await watchlistItem.remove();
-            await userData.save();
-            res.send ("Watchlist item removed.");
+        const item  = await MainData.findById(itemId);
+        if(!item){
+            return res.status(404).json({message: "Housing development not found"});
+
         }
+        userData.watchlist.splice(itemIndex, 1);
+        userData.save()
+        res.json(userData.watchlist);
+        
+
     }catch(err){
         res.status(500).send(err);
     }
