@@ -45,8 +45,6 @@ const importData = async () => {
 // Delete data
 const deleteData = async () => {
   try {
-    // await Bootcamp.deleteMany();
-    // await MainData.deleteMany();
     await User.deleteMany();
     await MainData.deleteMany();
     await TownStats.deleteMany();
