@@ -47,14 +47,14 @@ exports.getPrices = async(req, res, next)=>{
         });
         if(filteredResults.length==0){
             return res.status(404).send('No data found for given criteria');
-
+            
         }
         const totalPrice = filteredResults.reduce((acc,data)=>{
             return acc+data.propertyPrice;
         },0);
         const averagePrice  = totalPrice/filteredResults.length;
 
-        res.send('Estimated house price  : ${averagePrice');
+        res.send('Estimated house price  : ${averagePrice}');
     }catch(err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
