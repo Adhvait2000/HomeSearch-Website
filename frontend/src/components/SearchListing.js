@@ -5,9 +5,8 @@ import watchlistService from '../services/watchlistService';
 import './SearchListing.css';
 
 
+//TO DO: import search context and use it to display search results
 
-// Get the token from Local Storage
-// const token = localStorage.getItem('token');
 
 const userid = 1;
 const SearchListing = () => {
