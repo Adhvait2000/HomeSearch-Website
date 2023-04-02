@@ -18,8 +18,8 @@ export const useLogin = () => {
                 setNotificationMessage('Error occurred, please check again!');
             }
             else setNotificationMessage('Unknown error occurred, please try again.');
+            return 'error';
         }
-        return 'error';
     }
 
     return {login, notificationMessage, setNotificationMessage};

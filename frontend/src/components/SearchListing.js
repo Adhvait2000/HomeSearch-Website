@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { List, ListContent} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import watchlistService from '../services/watchlistService';
+import { useSearchContext } from '../hooks/useSearchContext';
 import './SearchListing.css';
 
 
@@ -10,11 +10,7 @@ import './SearchListing.css';
 
 const userid = 1;
 const SearchListing = () => {
-  const [searchResults, setSearchResults] = useState({});
-
-  const fetchNewSearchResults = async () => {
-
-  }
+  const searchContext = useSearchContext();
 
   const addListing = (itemId) => {
       return;
@@ -53,23 +49,14 @@ const SearchListing = () => {
             "District": "50"
         }
     ]
- 
-//     const [datajson, setData] = useState(null);
-//   function HandleClick(userid){
-//     useEffect(() => {
-//       axios.get('/$userid')
 
-//       .then((response) => {
-//         setData(response.datajson);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//     });
+    const x = searchContext.searchResults ? searchContext.searchResults : datajson; //temporary, till i get backend up.
+    console.log(JSON.stringify(x))
 
     return(
         <div className='search-list-container'>
-        {datajson.map(house => {
+
+        {x.map(house => {
           return (
             <div className='listing' key={house.id}>
               <List.List as='ul'>

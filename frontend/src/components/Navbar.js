@@ -66,7 +66,7 @@ function Navbar(){
                         Guides and Articles
                     </Link>
                     </li>
-
+                    
                     <li className='nav-item'>
                     <Link to='/Help' className='nav-links' onClick={closeMobileMenu}>
                         Help

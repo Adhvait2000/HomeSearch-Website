@@ -2,33 +2,24 @@ import { createContext, useReducer, useEffect } from 'react';
 
 export const SearchContext = createContext([]);
 
-
-///////change the below stuff!!!!!!!
-
-
-export const authReducer = (currentSearchResult, action) => {
+export const searchReducer = (state, action) => {
     switch (action.type) {
-        case 'NEW_SEARCH':
-            return [action.newSearchResult];
+        case 'SET_SEARCH_RESULTS':
+            return {...state, payload: action.newSearchResults};
 
         default:
-            return currentSearchResult;
+            return state;
     }
 }
 
 export const SearchContextProvider = ({children}) => {
-    const [state, dispatch] = useReducer(authReducer, {
-        user: null
+    const [state, dispatch] = useReducer(searchReducer, {
+        searchResults: null
     })
 
-    useEffect(() => { //whenever app is first rendered, check if user is in localStorage; if so, login with it.
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) dispatch({type: 'LOGIN', payload: user});
-    }, [])
-
     return (
-        <AuthContext.Provider value={{...state, dispatch}}>
+        <SearchContext.Provider value={{...state, dispatch}}>
             { children }
-        </AuthContext.Provider>
+        </SearchContext.Provider>
     )
 }
