@@ -38,28 +38,37 @@ exports.retrieveHousingDev = async(req,res,next) => {
 
 exports.addToWatchlist = async (req,res,next) => {
     const userId = req.params.userId;
-
+    const itemId = req.params.itemId;
     try {
-        const itemId = req.body.itemId;
-        const userData = await User.findOne({_id: userId});
-        const curWatchlist = userData.watchlist;
-        const housingData = MainData.findOne({_id:itemId});
+        const userData = await User.findById(userId).populate('watchlist');
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+        
+        const itemIndex = userData.watchlist.findIndex(item =>item._id.toString()===itemId)
+        if(itemIndex !== -1){
+            return res.status(400).json({message: "Item already exists in watchlist"});
 
-        if(!housingData ){
-            res.status (404).send("Watchlist item not found.");
         }
-        else{
-            curWatchlist.push(housingData);
+        const item = await MainData.findById(itemId)
+        if(!item){
+            return res.status(404).json({message:"Housing data not found"});
+
         }
 
-       await User.save();
-       const newWatchlist = await User.findOne({_id:userId}).watchlist;;
+            // curWatchlist.push(housingData);
+            // res.json(userData);
+            // await userData.save();
 
-        res.json(newWatchlist);
+            // res.json(housingData);
+            // res.json({message : "Watchlist item added"})
+        // const newWatchlist = await User.findOne({_id:userId}).watchlist;;
 
+        // res.json(newWatchlist);
+        res.json({message : "Watchlist"});
 
     }catch(err) {
-        res.status(500).send(err) ;
+        res.status(500).send({message : "watchlist add error"}) ;
     }
 };
 
@@ -78,6 +87,7 @@ exports.removeFromWatchlist = async (req,res,next) => {
         }
         else{
             await watchlistItem.remove();
+            await userData.save();
             res.send ("Watchlist item removed.");
         }
     }catch(err){

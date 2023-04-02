@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const MainData = require("../models/MainData");
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
   },
   // to store favourite housing projects which is tagged to each user individually
   watchlist: {
-    type: [mongoose.Schema.Types.Mixed],
+    type: [mongoose.Schema.Types.ObjectId],
     required: [false, "Please check if user has a watchlist"],
     default: [],
   },
@@ -64,7 +64,6 @@ UserSchema.methods.getSignedJwtToken = function () {
     }
   );
 };
-
 
 
 UserSchema.methods.matchPassword = async function (enteredPassword) {
