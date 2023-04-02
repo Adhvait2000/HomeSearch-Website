@@ -34,7 +34,8 @@ exports.getDistrictTypePrices = async (req, res, next) => {
 }
 
 exports.getPrices = async(req, res, next)=>{
-    const districtNumber = req.query.district;
+
+    const districtNumber = parseInt(req.query.district)
     const propertyType = req.query.property;
     const publicOrPrivate = req.query.publicprivate;
     try {
@@ -53,7 +54,9 @@ exports.getPrices = async(req, res, next)=>{
         },0);
         const averagePrice  = totalPrice/filteredResults.length;
 
-        res.send('Estimated house price  : ${averagePrice}');
+        // res.send('Estimated house price  : ${averagePrice}');
+        res.send({averagePrice});
+        // res.json(averagePrice);
     }catch(err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
