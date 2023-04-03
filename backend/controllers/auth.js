@@ -84,7 +84,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Forget password
-// @route   GET /homesearch/v1/auth/forgotpassword
+// @route   POST /homesearch/v1/auth/forgotpassword
 // @access  PUBLIC
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {

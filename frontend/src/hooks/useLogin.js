@@ -10,6 +10,8 @@ export const useLogin = () => {
         try{
             const response = await loginSignupService.sendLoginDetails(email, password);
             localStorage.setItem('user', JSON.stringify(response.data));
+            const userinfo = await loginSignupService.getUserDetails();
+            localStorage.setItem('user-info', JSON.stringify(userinfo.data));
             dispatch({type: 'LOGIN', payload: response.data});
             return 'success';
         }

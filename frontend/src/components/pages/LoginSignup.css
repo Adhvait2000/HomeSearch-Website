@@ -59,6 +59,16 @@
     cursor: pointer;
 }
 
+.smaller-login-button{
+    margin-top: 10px;
+    padding: 7px 11px;
+    background-color: rgb(207, 117, 0);
+    color: white;
+    border-style: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .login-options{
     display: flex;
     margin-top: 15px;

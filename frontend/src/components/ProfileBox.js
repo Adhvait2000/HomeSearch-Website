@@ -1,7 +1,7 @@
 
 import Notification from './Notification';
 import { useState, useEffect } from 'react';
-import profileService from '../services/profileService';
+import loginSignupService from '../services/loginSignupService';
 
 
 const ProfileBox = () => {
@@ -9,7 +9,8 @@ const ProfileBox = () => {
     const [email, setEmail] = useState('');
     const [profilename, setProfilename] = useState('');
     
-    const userdetails = JSON.parse(localStorage.getItem('user-details'));
+    const userdetails = JSON.parse(localStorage.getItem('user-info')).data;
+    console.log(userdetails);
     
     useEffect(() => {
       if (userdetails) {
@@ -17,23 +18,35 @@ const ProfileBox = () => {
         setProfilename(userdetails.name);
       }
     }, [userdetails]);
+
+    //sends request for reset token
+    const resetPass = () => {
+        loginSignupService.forgotPassword(email)
+        .then(response => setNotificationMessage('Check your email for a reset token.'))
+        .catch(error => setNotificationMessage('An error occurred. Please try again.'))
+    }
     
-
-
+    //handles change of password
     const changePass = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const signupForm = Object.fromEntries(formData);
-        if (signupForm['newPassword']!=signupForm['confirmPassword']){
+        const changePassForm = Object.fromEntries(formData);
+        if (changePassForm['newPassword']!=changePassForm['confirmPassword']){
             setNotificationMessage('Please confirm your password properly.');
             return;
         }
 
-        profileService
-            .submitNewPass(signupForm['newPassword'])
-            .then() //TO DO
-            .catch();
+        loginSignupService.resetPassword(changePassForm['newPassword'], changePassForm['token'])
+        .then(response => {
+            if (response.status==200) {
+                console.log('password changed!');
+                setNotificationMessage('Password changed!');
+            }
+        })
+        .catch(error => setNotificationMessage("Error; maybe your token is wrong?"))
     }
+
+
 
     return (
         <div className="box">
@@ -43,9 +56,10 @@ const ProfileBox = () => {
                 <p>Email: {email}</p>
                 <hr className="line"></hr>
                 <form className="changepass-form" onSubmit={changePass}>
-                    <input name="password" className="changepass-form-input" type="password" placeholder="Current Password"/>
+                    <input name="token" className="changepass-form-input" placeholder="Reset Token"/>
                     <input name="newPassword" className="changepass-form-input" type="password" placeholder="New Password"/>
                     <input name="confirmPassword" className="changepass-form-input" type="password" placeholder="Confirm Password"/>
+                    <button className="smaller-login-button" type="button" onClick={resetPass}>Get Reset Token</button>
                     <button className="login-button" type="submit">Change Password</button>
                 </form>
             </div>}
