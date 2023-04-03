@@ -4,11 +4,10 @@ import searchService from '../services/searchService'; //for district list
 import priceEstimatorService from '../services/priceEstimatorService';
 
 
-
-const PriEsBar = ({setResults}) => {
+const PriEsBar = () => {
     const [districtList, setDistrictList] = useState([]);
     const [propertyTypeList, setPropertyTypeList] = useState([]);
-    const [townStats, setTownStats] = useState({});
+    const [townStats, setTownStats] = useState();
     const [price, setPrice] = useState('-');
 
     //gets and sets dropdown list (for districts)
@@ -33,23 +32,23 @@ const PriEsBar = ({setResults}) => {
         const searchQuery = Object.fromEntries(formData);
         console.log(searchQuery);
 
+        //gets the price
         priceEstimatorService.getEstimatePrice(
             searchQuery['district'],
             searchQuery['property'],
             searchQuery['publicprivate'],
         )
-        .then(response => {
-            if (response.data=='No data found for given criteria') {
-                setPrice("No data for this criteria.");
-            }
-            else {
-                setPrice(response.data);
-            }
-        })
-    }
+        .then(response => setPrice(response.data))
+        .catch(error => {
+            if (error.response.status==404) setPrice('No data found for this criteria.');
+            }) 
+
+        //gets town data
+        priceEstimatorService.getTownStatistics(searchQuery['district'])
+        .then(response => setTownStats(response.data[0]));
+        }
+        
     
-
-
     return(
         
         <>
@@ -91,11 +90,21 @@ const PriEsBar = ({setResults}) => {
             </form>
             </div>
         
-        <div className="estimated-price">
-            <h3>Estimated Price:</h3>
-            {/*need to get data from backend*/}
-            <p>{price}</p>
+            <div className="estimated-price">
+                <h3>Estimated Price:</h3>
+            <p>{parseFloat(price)==NaN && '$'}{price}</p>
             </div>
+
+            {townStats ? (
+                <div className="estimated-price">
+                    <h3>District Statistics</h3>
+                    <p>Location: {townStats.generalLocation}</p>
+                    <p>Average Private Price: ${townStats.averagePricePvt ? townStats.averagePricePvt : '-'}</p>
+                    <p>Average Public Price: ${townStats.averagePricePublic ? townStats.averagePricePublic : '-'}</p>
+                    <p>Average Overall Price: ${townStats.averagePriceAll ? townStats.averagePriceAll : '-'}</p>
+                </div>
+            ) : <></>}
+
         </div>
         </div>
         </>
