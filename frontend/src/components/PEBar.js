@@ -1,53 +1,92 @@
 import React, { useState,useEffect} from 'react';
 import './PEBar.css';
-import searchService from '../services/searchService'; //for dropdown list
-//TO DO: import and use price estimator service
+import searchService from '../services/searchService'; //for district list
+import priceEstimatorService from '../services/priceEstimatorService';
 
 
 
 const PriEsBar = ({setResults}) => {
-    const [dropdownList, setDropdownList] = useState([]);
+    const [districtList, setDistrictList] = useState([]);
+    const [propertyTypeList, setPropertyTypeList] = useState([]);
+    const [townStats, setTownStats] = useState({});
+    const [price, setPrice] = useState('-');
 
-    searchService.getDropdownData()
-    .then(results => setDropdownList(results));
+    //gets and sets dropdown list (for districts)
+    useEffect(() => {
+        searchService.getDropdownData()
+        .then(response => {
+            setDistrictList(response.data); 
+        });
+    }, [])
+
+    //gets and sets dropdown list (for property types)
+    useEffect(() => {
+        priceEstimatorService.getPropertyTypeList()
+        .then(response => {
+            setPropertyTypeList(response.data); 
+        });
+    }, [])
    
     const submitQuery = (event) => { 
         event.preventDefault();
         const formData = new FormData(event.target);
         const searchQuery = Object.fromEntries(formData);
         console.log(searchQuery);
+
+        priceEstimatorService.getEstimatePrice(
+            searchQuery['district'],
+            searchQuery['property'],
+            searchQuery['publicprivate'],
+        )
+        .then(response => {
+            if (response.data=='No data found for given criteria') {
+                setPrice("No data for this criteria.");
+            }
+            else {
+                setPrice(response.data);
+            }
+        })
     }
-   //to check      
-    const price=90;
     
+
+
     return(
         
-        <><div className="floaty">
+        <>
+        <div className="floaty">
             <div className='price-estimate-container'>
         <div className="searchbar">
             <form onSubmit={submitQuery}>
-                <div >
-                <select name="buyRent" className="searchbarForm">
-                    <option value="buy">Buy</option>
-                    <option value="rent">Rent</option>
+
+                <div>
+                <select name="district" className="searchbarForm" defaultValue="default">
+                    <option value="1000" default>District</option>
+                    {
+                        districtList.map(district => 
+                        <option value={district.districtNumber}> {district.generalLocation} </option>
+                        )
+                    }
                 </select>
                 </div>
+
                 <div>
-                <select name="propertyType" className="searchbarForm" defaultValue="default">
+                <select name="publicprivate" className="searchbarForm" defaultValue="default">
                     <option value="Public">Public</option>
                     <option value="Private">Private</option>
                 </select>
                 </div>
+
                 <div>
-                <select name="districtNumber" className="searchbarForm" defaultValue="default">
-                    <option value="1000" default disabled>District</option>
-                {
-                    dropdownList.map(district => 
-                    <option value={district.districtNumber}> {district.generalLocation} </option>
-                    )
-                }
+                <select name="property" className="searchbarForm" defaultValue="default">
+                    <option value="" default>Property Type</option>
+                    {
+                        propertyTypeList.map(type => 
+                        <option value={type}> {type} </option>
+                        )
+                    }
                 </select>
                 </div>
+
                 <button type="submit"  className="button">Search</button>
             </form>
             </div>
@@ -58,7 +97,8 @@ const PriEsBar = ({setResults}) => {
             <p>{price}</p>
             </div>
         </div>
-        </div></>
+        </div>
+        </>
     )
 }
 
