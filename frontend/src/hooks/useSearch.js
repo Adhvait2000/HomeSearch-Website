@@ -1,27 +1,27 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useSearchContext} from './useSearchContext';
 import searchService from '../services/searchService';
 
 export const useSearch = () => {
     const {dispatch} = useSearchContext();
     const [notificationMessage, setNotificationMessage] = useState(''); //use for errors.
+    
 
+    
     const search = async (districtNumber, maxPrice, buyRent, publicOrPrivate, sortBy) => {
         try{
-            let results;
+            let response;
             if (sortBy==='asc'){    
-                results = await searchService.lowestPriceSearch(
+                response = await searchService.lowestPriceSearch(
                     districtNumber,
                     maxPrice, //since, if maxPrice=0, its still considered truthy
                     buyRent,
                     publicOrPrivate
                     )
-                
-                
             }
             
             else if (sortBy==='desc'){
-                results = await searchService.highestPriceSearch(
+                response = await searchService.highestPriceSearch(
                     districtNumber,
                     maxPrice, //since, if maxPrice=0, its still considered truthy
                     buyRent,
@@ -33,7 +33,7 @@ export const useSearch = () => {
             //if sortBy isn't desc or asc then fuck u
             }
 
-            dispatch({type: 'SET_SEARCH_RESULTS', payload: results});
+            dispatch({type: 'SET_SEARCH_RESULTS', payload: response.data});
             return 'success';
         }
         catch (error) {
@@ -45,5 +45,11 @@ export const useSearch = () => {
         }
     }
 
-    return {search, notificationMessage, setNotificationMessage};
+    const resetSearch = () => {
+        console.log('search results reset');
+        dispatch({type: 'RESET'});
+        return 'success';
+    }
+
+    return {search, resetSearch, notificationMessage, setNotificationMessage};
 }

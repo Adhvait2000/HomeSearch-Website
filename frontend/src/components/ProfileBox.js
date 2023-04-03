@@ -1,4 +1,4 @@
-import loginSignupService from '../services/loginSignupService';
+
 import Notification from './Notification';
 import { useState, useEffect } from 'react';
 import profileService from '../services/profileService';
@@ -12,9 +12,7 @@ const ProfileBox = () => {
     const userdetails = JSON.parse(localStorage.getItem('user-details'));
     
     useEffect(() => {
-      if (!userdetails) {
-        setNotificationMessage("Oh dear, seems you aren't logged in!");
-      } else {
+      if (userdetails) {
         setEmail(userdetails.email);
         setProfilename(userdetails.name);
       }

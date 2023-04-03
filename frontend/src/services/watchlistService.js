@@ -11,7 +11,7 @@ const getWatchlist = async () => {
     const userId = tokenAndHeaderPrep.getUserId();
     if (!userId) {
         console.log('No user is logged in.');
-        return;
+        return null;
     }
     return axios.get(`${baseUrl}/${userId}`, {
         headers: tokenAndHeaderPrep.getAuthHeaders()

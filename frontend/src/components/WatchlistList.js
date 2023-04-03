@@ -3,9 +3,10 @@ import { List, ListContent } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import './SearchListing.css';
 import watchlistService from '../services/watchlistService';
+import searchService from '../services/searchService';
 
 
-function Watchlist(){
+const WatchlistList = () => {
   //random datafor test change later 
   const datajson=[
     {
@@ -39,52 +40,61 @@ function Watchlist(){
         "District": "50"
     }
 ]
+  const [watchlistItems, setWatchlistItems] = useState(null);
+  const [dropdownList, setDropdownList] = useState([]); //to get district names from districtNumber.
+
+  useEffect(() => { //gets the dropdown data
+    searchService.getDropdownData()
+    .then(response => {
+        setDropdownList(response.data);
+    });
+  }, [])
+
+  useEffect(() => {
+    try{  
+      (async () => await watchlistService.getWatchlist())()
+      .then(watchlist => setWatchlistItems(watchlist));
+  }
+  catch{
+      console.log('Some error occurred while loading watchlist.');
+      setWatchlistItems(null);
+  }
+  }, [])
 
 
-
-  const getWatchlistItems = async () => { //use watchlistService to get the user's watchlist.
-    try{
-        const watchlistItems = await watchlistService.getWatchlist();
-        return watchlistItems;
-    }
-    catch{
-        return {};
-    }
-    }
-
-  //const [watchlistItems, setwatchlistItems] = useState(getWatchlistItems());    change to this once backend is connected
-  const [watchlistItems, setwatchlistItems] = useState(datajson);
 
   const deleteListing = (itemId) => {
     const updatedWatchlist = watchlistItems.filter((item) => item.id != itemId);
-    setwatchlistItems(updatedWatchlist);
+    setWatchlistItems(updatedWatchlist);
     watchlistService.deleteFromWatchlist(itemId);
   }
     
     return(
         <div className='housing details'>
-        {watchlistItems.map(house => { 
+        {watchlistItems ?
+        (watchlistItems.map(house => { 
           return (
-            <div className='listing' key={house.id}>
+            <div className='listing' key={house._id}>
               <List.List as='ul'>
-                <h1 key={house.id}></h1>
+                <h1 key={house._id}></h1> 
                 <table>
                   <tbody>
                     <tr>
                       <th>Type:</th>
-                      <td>{house.type}</td>
+                      <td>{house.propertyPrivatePublic}</td>
                     </tr>
                     <tr>
-                      <th>Buy/Rent:</th>
-                      <td><Link to='/sign-up'>{house.Buy_Rent}</Link></td>
+                      <th>Buy/Rent:</th>  
+                      <td><Link to='/sign-up'>{house.statusBuyRent}</Link></td>
                     </tr>
                     <tr>
                       <th>District:</th>
-                      <td>{house.District}</td>
+                      <td>{dropdownList.find(dist => dist.districtNumber == house.districtNumber).generalLocation}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="2">
-                        <button onClick={() => deleteListing(house.id)}>Delete from watchlist</button>
+                        <button onClick={()=>deleteListing(house._id)}>Add to watchlist</button>
                       </td>
                     </tr>
                   </tbody>
@@ -92,11 +102,11 @@ function Watchlist(){
               </List.List>
             </div>
           );
-        })}
+        })) : <div>There are no items in your watchlist.</div>}
       </div>
     
 
     )
 }
 
-export default Watchlist;
+export default WatchlistList;

@@ -1,83 +1,67 @@
 import React, { useState, useEffect} from 'react';
 import { List, ListContent} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSearchContext } from '../hooks/useSearchContext';
+import { useSearch } from '../hooks/useSearch';
+import searchService from '../services/searchService';
+import watchlistService from '../services/watchlistService';
 import './SearchListing.css';
 
 
-//TO DO: import search context and use it to display search results
 
-
-const userid = 1;
 const SearchListing = () => {
+  const location = useLocation(); //get location; if changes, reset search results.
   const searchContext = useSearchContext();
+  const [dropdownList, setDropdownList] = useState([]); //to get district names from districtNumber.
+  const {resetSearch} = useSearch();
 
-  const addListing = (itemId) => {
+  useEffect(() => { //gets the dropdown data
+    searchService.getDropdownData()
+    .then(response => {
+        setDropdownList(response.data);
+    });
+  }, []) //TO DO: when we revisit searchpage after searching, searchContext already saved previous search
+  // but dropdown data is null. to counter, make this synchronous.
+
+
+  const addListing = (itemId) => { 
+      watchlistService.addToWatchlist(itemId)
+      .then(response => console.log(response.status));
       return;
   }
 
-//random datafor test
-   const datajson=[
-        {
-            "id": 1,
-            "type": "hdb",
-            "Buy_Rent": "buy",
-            "private/public": "private",
-            "District": "60"
-        },
-    
-        {
-            "id": 2,
-            "type": "condo",
-            "Buy_Rent": "rent",
-            "private/public": "private",
-            "District": "40"
-        },
-        {
-            "id": 3,
-            "type": "condo",
-            "Buy_Rent": "rent",
-            "private/public": "private",
-            "District": "40"
-        },
-        
-        {
-            "id": 4,
-            "type": "building",
-            "Buy_Rent": "rent",
-            "private/public": "private",
-            "District": "50"
-        }
-    ]
-
-    const x = searchContext.searchResults ? searchContext.searchResults : datajson; //temporary, till i get backend up.
-    console.log(JSON.stringify(x))
+  useEffect(() => {
+    const reset = () => resetSearch();
+    return reset;
+  }, [location]);
 
     return(
         <div className='search-list-container'>
 
-        {x.map(house => {
+        {searchContext.searchResults ? //if searchResults is null, render nothing. else, render it in the website.
+        (searchContext.searchResults.map(house => {
           return (
-            <div className='listing' key={house.id}>
+            <div className='listing' key={house._id}>
               <List.List as='ul'>
-                <h1 key={house.id}></h1>
+                <h1 key={house._id}></h1> 
                 <table>
                   <tbody>
                     <tr>
                       <th>Type:</th>
-                      <td>{house.type}</td>
+                      <td>{house.propertyPrivatePublic}</td>
                     </tr>
                     <tr>
-                      <th>Buy/Rent:</th>
-                      <td><Link to='/sign-up'>{house.Buy_Rent}</Link></td>
+                      <th>Buy/Rent:</th>  
+                      <td><Link to='/sign-up'>{house.statusBuyRent}</Link></td>
                     </tr>
                     <tr>
                       <th>District:</th>
-                      <td>{house.District}</td>
+                      <td>{dropdownList.find(dist => dist.districtNumber == house.districtNumber).generalLocation}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="2">
-                        <button onClick={()=>addListing(house.id)}>Add to watchlist</button>
+                        <button onClick={()=>addListing(house._id)}>Add to watchlist</button>
                       </td>
                     </tr>
                   </tbody>
@@ -85,7 +69,9 @@ const SearchListing = () => {
               </List.List>
             </div>
           );
-        })}
+        }
+        )) : (<></>)
+        }
       </div>
     
 

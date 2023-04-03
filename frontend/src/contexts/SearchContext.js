@@ -1,11 +1,14 @@
 import { createContext, useReducer, useEffect } from 'react';
 
-export const SearchContext = createContext([]);
+export const SearchContext = createContext(null);
 
 export const searchReducer = (state, action) => {
     switch (action.type) {
         case 'SET_SEARCH_RESULTS':
-            return {...state, payload: action.newSearchResults};
+            return {...state, searchResults: action.payload};
+
+        case 'RESET':
+            return {...state, searchResults: null};
 
         default:
             return state;

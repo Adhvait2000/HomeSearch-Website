@@ -6,7 +6,8 @@ const Notification = ({ message }) => {
       borderStyle: 'solid',
       borderRadius: '5px',
       padding: '10px',
-      marginBottom: '10px'
+      marginBottom: '10px',
+      textAlign: 'center'
     }
 
   if (message === '') {
