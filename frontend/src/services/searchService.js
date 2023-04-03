@@ -36,8 +36,15 @@ const lowestPriceSearch = (districtNumber, maxPrice, buyOrRent, publicOrPrivate)
 }
 
 
+const singleHouseDetails = (houseId) => {
+    return axios.get(`${baseUrl}/getSingleHouseDetails/${houseId}`, {
+        headers: tokenAndHeaderPrep.getAuthHeaders()
+    })
+}
+
 export default {
     getDropdownData,
     highestPriceSearch,
-    lowestPriceSearch
+    lowestPriceSearch,
+    singleHouseDetails
 }

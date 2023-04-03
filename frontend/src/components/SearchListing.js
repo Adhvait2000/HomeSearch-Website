@@ -54,6 +54,12 @@ const SearchListing = () => {
                       <th>Buy/Rent:</th>  
                       <td><Link to='/sign-up'>{house.statusBuyRent}</Link></td>
                     </tr>
+                    {house.propertyPrice &&
+                      <tr>
+                        <th>Price/Rental:</th>  
+                        <td><Link to='/sign-up'>{`$${house.propertyPrice}`}</Link></td>
+                      </tr>
+                    }
                     <tr>
                       <th>District:</th>
                       <td>{dropdownList.find(dist => dist.districtNumber == house.districtNumber).generalLocation}

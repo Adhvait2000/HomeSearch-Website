@@ -24,10 +24,10 @@ const addToWatchlist = async (itemId) => {
         console.log('No user is logged in.');
         return;
     }
-    return axios.post(`${baseUrl}/${userId}/${itemId}`, {
+    return axios.post(`${baseUrl}/${userId}/${itemId}`, {}, {
         headers: tokenAndHeaderPrep.getAuthHeaders()
       });
-}
+}   
 
 const deleteFromWatchlist = async (itemId) => {
     const userId = tokenAndHeaderPrep.getUserId();
