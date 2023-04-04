@@ -78,5 +78,5 @@ exports.getPropertyTypeList = async(req, res, next)=>{
 
             }
         });
-    
+
 };
