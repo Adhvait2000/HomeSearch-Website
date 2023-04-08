@@ -22,9 +22,6 @@ const LoginBox = ({isLoginBox, setLoginOrSignupBox}) => {
         login(emailValue, loginForm['password'])
         .then(response => {
             if (response==='success'){
-                localStorage.setItem(
-                    'user-details', 
-                    JSON.stringify({'email': emailValue, 'name': loginForm['name']}))
                 navigate("/");
             }
         });

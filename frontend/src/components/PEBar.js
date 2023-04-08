@@ -26,6 +26,7 @@ const PriEsBar = () => {
         });
     }, [])
    
+    //submits the estimator query
     const submitQuery = (event) => { 
         event.preventDefault();
         const formData = new FormData(event.target);
