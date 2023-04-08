@@ -54,10 +54,11 @@ const SearchListing = () => {
                       <th>Buy/Rent:</th>  
                       <td><Link to='/sign-up'>{house.statusBuyRent}</Link></td>
                     </tr>
-                    {house.propertyPrice &&
+                    {(house.propertyPrice || house.rentalPriceSqft) &&
                       <tr>
                         <th>Price/Rental:</th>  
-                        <td><Link to='/sign-up'>{`$${house.propertyPrice}`}</Link></td>
+                        {house.propertyPrice && <td><Link to='/sign-up'>{`$${house.propertyPrice}`}</Link></td>}
+                        {house.rentalPriceSqft && <td><Link to='/sign-up'>{`$${house.rentalPriceSqft}`}</Link></td>}
                       </tr>
                     }
                     <tr>
