@@ -38,7 +38,7 @@ const PriEsBar = () => {
             searchQuery['property'],
             searchQuery['publicprivate'],
         )
-        .then(response => setPrice(response.data))
+        .then(response => setPrice(response.data['Estimated house price']))
         .catch(error => {
             if (error.response.status==404) setPrice('No data found for this criteria.');
             }) 
@@ -64,7 +64,7 @@ const PriEsBar = () => {
                         districtList.map(district => 
                         <option value={district.districtNumber}> {district.generalLocation} </option>
                         )
-                    }
+                    }   
                 </select>
                 </div>
 
@@ -90,9 +90,9 @@ const PriEsBar = () => {
             </form>
             </div>
         
-            <div className="estimated-price">
+            <div className="estimated-price (SGD):">
                 <h3>Estimated Price:</h3>
-            <p>{parseFloat(price)==NaN && '$'}{price}</p>
+            <p>{parseFloat(price)==NaN && '$'}{price ? parseInt(price) : '-'}</p>
             </div>
 
             {townStats ? (

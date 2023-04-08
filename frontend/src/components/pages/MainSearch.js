@@ -5,6 +5,7 @@ import './MainSearch.css';
 import Map from '../Map.js';
 import SearchListing from '../SearchListing';
 import Notification from '../Notification';
+import BingSearch from '../bingapi';
 import { useSearchContext } from '../../hooks/useSearchContext';
 import searchService from '../../services/searchService';
 
@@ -43,10 +44,13 @@ const MainSearch = () => {
             <Searchbar/>
             <Notification message={notificationMessage}/>
             {userdetails &&
+            <>
                 <div className="search-float">
+                    <BingSearch/>
                     <SearchListing/>
-                    <Map location={{address: location}} zoomLevel={13}/> //sorry
+                    <Map location={{address: location}} zoomLevel={13}/>
                 </div>
+            </>
             }
         </>
     )

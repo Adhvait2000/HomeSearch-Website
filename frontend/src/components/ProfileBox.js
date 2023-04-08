@@ -9,7 +9,7 @@ const ProfileBox = () => {
     const [email, setEmail] = useState('');
     const [profilename, setProfilename] = useState('');
     
-    const userdetails = JSON.parse(localStorage.getItem('user-info')).data;
+    const userdetails = JSON.parse(localStorage.getItem('user-info')) || JSON.parse(localStorage.getItem('user-details'));
     console.log(userdetails);
     
     useEffect(() => {
